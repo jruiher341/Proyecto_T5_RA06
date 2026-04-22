@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="Proyecto de ejemplo de conexión a MySQL">   <!-- Descripción básica de la web -->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">          <!-- La meta viewport es esencial para que la página sea responsive en móviles -->
+        <meta name="author" content="Sergio Sánchez Martín">                  <!-- Autor de la página web -->
+        <title>Ejemplo de acceso a MySQL con JavaScript y servidor Node.js</title>
+        <link rel="icon" type="image/x-icon" href="./assets/images/MySQL.svg">               <!-- Favicon de la página -->
+        <!-- Buenas prácticas de SEO -->
+        <meta name="keywords" content="HTML5, CSS3, diseño web">                        <!-- Palabras clave que ayudan a los buscadores a entender el contenido (ya no tan relevantes en SEO moderno) -->
+        <meta name="robots" content="index, follow">                                    <!-- Indica a los motores de búsqueda si deben indexar la página y seguir los enlaces -->
+        <link rel="stylesheet" href="./css/estilos.css">                                      <!-- Hoja de estilos -->
+    </head>
+
+    <body>
+        <header>
+            <h1>Ejemplo de acceso a MySQL con JavaScript y servidor Node.JS</h1>
+        </header>
+
+        <main>
+            <!-- Panel lateral -->
+            <div class="panel-lateral">
+
+                <div class="contenedor-BD">
+                    <img src="./assets/images/SQL_Database.svg" alt="Base de Datos" class="imagen-BD">
+                    <h2>ejemplo_usuarios</h2>
+                </div>
+
+                <div class="contenedor-filtros">
+                    <img src="./assets/images/filters.png" alt="Filtros" class="imagen-filtros">
+                    <h2>Filtros</h2>
+                </div>
+
+                <!-- Cajas para introducir los filtros -->
+                <input type="text" id="busquedaporciudad" placeholder="Buscar por ciudad...">
+
+                <!-- Botones para buscar según los filtros -->
+                 <button id="botonbuscartodo" class="boton-filtro">
+                    <img src="./assets/images/usuarios.png" alt="Mostrar todos" class="imagen-boton">
+                    Mostrar todos los usuarios
+                </button>
+
+                <button id="botonbusquedaporciudad" class="boton-filtro">
+                    <img src="./assets/images/buscar.png" alt="Buscar por ciudad" class="imagen-boton">
+                    Buscar usuarios por ciudad
+                </button>
+
+                <!-- Botón para insertar un usuario -->
+                <button id="botoninsertarusuario" class="boton-filtro">
+                    <img src="./assets/images/agregar-usuario.png" alt="Insertar un usuario" class="imagen-boton">
+                    Insertar un usuario
+                </button>
+
+                <!-- Botón para eliminar un usuario -->
+                <button id="botoneliminarusuario" class="boton-filtro">
+                    <img src="./assets/images/borrar-usuario.png" alt="Eiminar un usuario" class="imagen-boton">
+                    Eiminar un usuario
+                </button>
+
+                <!-- Botón para actualizar un usuario -->
+                <button id="botonactualizarusuario" class="boton-filtro">
+                    <img src="./assets/images/editar-usuario.png" alt="Actualizar un usuario" class="imagen-boton">
+                    Actualizar un usuario
+                </button>
+            </div>
+
+            <!-- Contenido donde se muestran los datos recuperados de la BD no relacional -->
+            <div class="contenido-principal">
+                <h1>Usuarios recuperados</h1>
+                <div id="mensajesalida" class="contenedor-grid"></div>
+            </div>
+        </main>
+
+        <footer>
+            <p>Lenguajes de marcas y sistemas de gestión de información. Unidad Didáctica 05 - JSON y los SGBD</p>
+        </footer>
+
+        <!-- Script del ejercicio -->
+        <script src="./js/javascript.js"></script>
+    </body>
+</html>
