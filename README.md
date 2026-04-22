@@ -37,7 +37,6 @@ El objetivo es tener todo centralizado en una sola app en vez de llevar la gesti
 - **Entrenador**: trabajador del gimnasio. Ve las clases que tiene asignadas.
 - **Administrador** *(pendiente)*: gestiona todo el sistema.
 
----
 
 ## 🏗️ Estructura de la aplicación
 
@@ -47,7 +46,6 @@ El objetivo es tener todo centralizado en una sola app en vez de llevar la gesti
 
 **Base de datos:** MySQL con tablas para centros, usuarios, socios, entrenadores, salas, actividades, membresías e inscripciones.
 
----
 
 ## 🗄️ Base de datos
 
