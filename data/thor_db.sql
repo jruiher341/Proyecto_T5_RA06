@@ -2,94 +2,98 @@
 CREATE DATABASE thor_db;
 USE thor_db;
 
--- Creación de la tabla centro
+-- CENTRO
 CREATE TABLE centro (
-  id_centro     INT            NOT NULL AUTO_INCREMENT,
-  nombre        VARCHAR(100)   NOT NULL,
-  direccion     VARCHAR(200)   NOT NULL,
-  telefono      VARCHAR(20),
-  email         VARCHAR(100),
+  id_centro INT NOT NULL AUTO_INCREMENT,
+  nombre VARCHAR(100) NOT NULL,
+  direccion VARCHAR(200) NOT NULL,
+  telefono VARCHAR(20),
+  email VARCHAR(100),
   PRIMARY KEY (id_centro)
 ) ENGINE=INNODB;
 
--- Creación de la tabla membresia
+-- MEMBRESIA
 CREATE TABLE membresia (
-  id_membresia  INT            NOT NULL AUTO_INCREMENT,
-  nombre        VARCHAR(100)   NOT NULL,
-  duracion_dias INT            NOT NULL COMMENT 'Duración en días (ej: 30, 90, 365)',
-  precio        DECIMAL(8,2)   NOT NULL,
+  id_membresia INT NOT NULL AUTO_INCREMENT,
+  nombre VARCHAR(100) NOT NULL,
+  duracion_dias INT NOT NULL,
+  precio DECIMAL(8,2) NOT NULL,
   PRIMARY KEY (id_membresia)
 ) ENGINE=INNODB;
 
--- Creación de la tabla usuario (supertipo)
+-- USUARIO
 CREATE TABLE usuario (
-  id_usuario    INT            NOT NULL AUTO_INCREMENT,
-  email         VARCHAR(150)   NOT NULL UNIQUE,
-  telefono      VARCHAR(20),
-  password_hash VARCHAR(255)   NOT NULL COMMENT 'Contraseña con hash',
-  rol           ENUM('socio', 'entrenador') NOT NULL,
+  id_usuario INT NOT NULL AUTO_INCREMENT,
+  email VARCHAR(150) NOT NULL UNIQUE,
+  telefono VARCHAR(20),
+  password_hash VARCHAR(255) NOT NULL,
+  rol ENUM('socio','entrenador') NOT NULL,
   PRIMARY KEY (id_usuario)
 ) ENGINE=INNODB;
 
--- Creación de la tabla socio (supertipo de usuario)
+-- SOCIO
 CREATE TABLE socio (
-    id_socio      INT            NOT NULL AUTO_INCREMENT,
-    id_usuario    INT            NOT NULL UNIQUE COMMENT 'Un usuario solo puede ser un socio',
-    nombre        VARCHAR(100)   NOT NULL,
-    telefono      VARCHAR(20),
-    id_centro     INT            NOT NULL,
-    id_membresia  INT            NOT NULL,
-    PRIMARY KEY (id_socio),
-    FOREIGN KEY (id_usuario)   REFERENCES usuario(id_usuario)   ON DELETE CASCADE,
-    FOREIGN KEY (id_centro)    REFERENCES centro(id_centro)     ON DELETE RESTRICT,
-    FOREIGN KEY (id_membresia) REFERENCES membresia(id_membresia) ON DELETE RESTRICT
+  id_socio INT NOT NULL AUTO_INCREMENT,
+  id_usuario INT NOT NULL UNIQUE,
+  nombre VARCHAR(100) NOT NULL,
+  telefono VARCHAR(20),
+  id_membresia INT NOT NULL,
+  PRIMARY KEY (id_socio),
+  FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario) ON DELETE CASCADE,
+  FOREIGN KEY (id_membresia) REFERENCES membresia(id_membresia)
 ) ENGINE=INNODB;
 
--- Creación de la tabla entrenador (supertipo de usuario)
+-- ENTRENADOR
 CREATE TABLE entrenador (
-    id_entrenador INT            NOT NULL AUTO_INCREMENT,
-    id_usuario    INT            NOT NULL UNIQUE COMMENT 'Un usuario solo puede ser un entrenador',
-    nombre        VARCHAR(100)   NOT NULL,
-    especialidad  VARCHAR(100),
-    id_centro     INT            NOT NULL,
-    PRIMARY KEY (id_entrenador),
-    FOREIGN KEY (id_usuario)  REFERENCES usuario(id_usuario)  ON DELETE CASCADE,
-    FOREIGN KEY (id_centro)   REFERENCES centro(id_centro)    ON DELETE RESTRICT
+  id_entrenador INT NOT NULL AUTO_INCREMENT,
+  id_usuario INT NOT NULL UNIQUE,
+  nombre VARCHAR(100) NOT NULL,
+  especialidad VARCHAR(100),
+  id_centro INT NOT NULL,
+  PRIMARY KEY (id_entrenador),
+  FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario) ON DELETE CASCADE,
+  FOREIGN KEY (id_centro) REFERENCES centro(id_centro)
 ) ENGINE=INNODB;
 
--- Creación de la tabla sala
+-- SALA
 CREATE TABLE sala (
-    id_sala       INT            NOT NULL AUTO_INCREMENT,
-    nombre        VARCHAR(100)   NOT NULL,
-    id_centro     INT            NOT NULL,
-    PRIMARY KEY (id_sala),
-    FOREIGN KEY (id_centro) REFERENCES centro(id_centro) ON DELETE RESTRICT
+  id_sala INT NOT NULL AUTO_INCREMENT,
+  nombre VARCHAR(100) NOT NULL,
+  id_centro INT NOT NULL,
+  PRIMARY KEY (id_sala),
+  FOREIGN KEY (id_centro) REFERENCES centro(id_centro)
 ) ENGINE=INNODB;
 
--- Creación de la tabla actividad
+-- ACTIVIDAD (SIN entrenador directo)
 CREATE TABLE actividad (
-    id_actividad  INT            NOT NULL AUTO_INCREMENT,
-    nombre        VARCHAR(100)   NOT NULL,
-    horario       DATETIME       NOT NULL COMMENT 'Fecha y hora de inicio de la actividad',
-    id_centro     INT            NOT NULL,
-    id_sala       INT            NOT NULL,
-    id_entrenador INT            NOT NULL,
-    PRIMARY KEY (id_actividad),
-    FOREIGN KEY (id_centro)    REFERENCES centro(id_centro)       ON DELETE RESTRICT,
-    FOREIGN KEY (id_sala)      REFERENCES sala(id_sala)           ON DELETE RESTRICT,
-    FOREIGN KEY (id_entrenador) REFERENCES entrenador(id_entrenador) ON DELETE RESTRICT
+  id_actividad INT NOT NULL AUTO_INCREMENT,
+  nombre VARCHAR(100) NOT NULL,
+  horario DATETIME NOT NULL,
+  id_centro INT NOT NULL,
+  id_sala INT NOT NULL,
+  PRIMARY KEY (id_actividad),
+  FOREIGN KEY (id_centro) REFERENCES centro(id_centro),
+  FOREIGN KEY (id_sala) REFERENCES sala(id_sala)
 ) ENGINE=INNODB;
 
--- Creación de la tabla inscripcion (N:M entre socio y actividad)
+-- RELACIÓN N:M ENTRENADOR - ACTIVIDAD
+CREATE TABLE entrenador_actividad (
+  id_entrenador INT NOT NULL,
+  id_actividad INT NOT NULL,
+  PRIMARY KEY (id_entrenador, id_actividad),
+  FOREIGN KEY (id_entrenador) REFERENCES entrenador(id_entrenador) ON DELETE CASCADE,
+  FOREIGN KEY (id_actividad) REFERENCES actividad(id_actividad) ON DELETE CASCADE
+) ENGINE=INNODB;
+
+-- INSCRIPCION (N:M SOCIO - ACTIVIDAD)
 CREATE TABLE inscripcion (
-    id_socio      INT            NOT NULL,
-    id_actividad  INT            NOT NULL,
-    fecha_inscripcion DATE       NOT NULL DEFAULT (CURRENT_DATE),
-    PRIMARY KEY (id_socio, id_actividad),
-    FOREIGN KEY (id_socio)     REFERENCES socio(id_socio)         ON DELETE CASCADE,
-    FOREIGN KEY (id_actividad) REFERENCES actividad(id_actividad) ON DELETE CASCADE
+  id_socio INT NOT NULL,
+  id_actividad INT NOT NULL,
+  fecha_inscripcion DATE NOT NULL DEFAULT (CURRENT_DATE),
+  PRIMARY KEY (id_socio, id_actividad),
+  FOREIGN KEY (id_socio) REFERENCES socio(id_socio) ON DELETE CASCADE,
+  FOREIGN KEY (id_actividad) REFERENCES actividad(id_actividad) ON DELETE CASCADE
 ) ENGINE=INNODB;
-
 
 -- INSERTS de la tabla centro
 INSERT INTO centro (nombre, direccion, telefono, email) VALUES

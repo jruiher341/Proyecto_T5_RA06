@@ -5,8 +5,6 @@
 - Yeray
 - Javier Ruiz Herrera
 
-
-
 ## 📋 Descripción
 
 Thor es una aplicación web para gestionar una cadena de gimnasios. La idea es que tanto los socios como los entrenadores puedan entrar con su cuenta y ver la información que les corresponde: actividades, horarios, membresías, etc.
@@ -14,12 +12,11 @@ Thor es una aplicación web para gestionar una cadena de gimnasios. La idea es q
 El objetivo es tener todo centralizado en una sola app en vez de llevar la gestión a mano o con hojas de cálculo.
 
 
-
 ## 🎯 Objetivos
 
 - Crear una web con login que funcione según el rol del usuario.
-- Gestionar socios, entrenadores, actividades y membresías desde una base de datos.
-- Que cada usuario vea solo lo que le corresponde según su rol.
+- Gestionar socios, entrenadores, actividades y membresías desde la base de datos.
+- Que cada usuario vea solo el dashboard que le corresponde según su rol.
 
 
 ## ⚙️ Funcionalidades principales
@@ -29,13 +26,14 @@ El objetivo es tener todo centralizado en una sola app en vez de llevar la gesti
 - Los entrenadores pueden ver las clases que imparten.
 - Panel de administración para gestionar centros, salas y actividades.
 - Consultar qué centros están abiertos en ese momento.
+- Ver gimnasios por direccion.
 
 
 ## 👤 Tipos de usuarios
 
 - **Socio**: cliente del gimnasio. Ve sus actividades y su membresía.
 - **Entrenador**: trabajador del gimnasio. Ve las clases que tiene asignadas.
-- **Administrador** *(pendiente)*: gestiona todo el sistema.
+- **Administrador** *(pendiente)*: gestiona todo el sistema (no va a formar parte de la base de datos, sera un usuario temporal para testear funciones).
 
 
 ## 🏗️ Estructura de la aplicación
@@ -59,5 +57,8 @@ mysql -u root -p < thor_db.sql
 ## 🛠️ Tecnologías
 
 - HTML, CSS, JavaScript
+- Java
 - MySQL
 - Git / GitHub
+
+### ‼️ Esta es la idea básica y principal de la app, se ira añadiendo y modificando cosas durante el desarrollo.
