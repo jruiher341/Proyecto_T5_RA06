@@ -1,236 +1,211 @@
-/*****************************************************************************/
-/* Módulo profesional: Lenguajes de marcas y sistemas de gestión de la información */
-/* Unidad didáctica 05: JSON y los SGBD                                      */
-/* Ejemplo de conexión con MySQL usando Node.js                              */
-/*****************************************************************************/
-
 :root {
-  --background-color: #F5E7D3;
-  --background-header-color: #8D6E63;
-  --text-color: white;
-  --background-main-color: #D9C2A7;
-  --backgorund-left-main-color: #8D8C6F;
-  --background-button-color: #A67C52;
-  --background-button-hover-color: #6E4F30;
-  --background-grid-item-color: #E6D5BD;
+    --primary: #FF5722;
+    --primary-dark: #E64A19;
+    --bg-dark: #0A0A0A;
+    --card-bg: #141414;
+    --text-white: #FFFFFF;
+    --text-gray: #A0A0A0;
+    --font-main: 'Inter', sans-serif;
 }
-
-/************************************/
-/* Estilos base para toda la página */
-/************************************/
 
 * {
-    margin: 0;                          /* Elimina el margen por defecto de todos los elementos */
+    margin: 0;
     padding: 0;
-    box-sizing: border-box;             /* Asegura que el padding y los bordes no aumenten el ancho/alto total del elemento */
-    font-family: 'Arial', sans-serif;
+    box-sizing: border-box;
 }
 
-/************************/
-/* Estilos para el body */
-/************************/
+body {
+    background-color: var(--bg-dark);
+    font-family: var(--font-main);
+    color: var(--text-white);
+    overflow-x: hidden;
+}
 
-    body {
-
-        /* Estos son los estilos que van a hacer que el body se configure correctamente */
-        min-height: 100vh;                  /* Asegura que la altura mínima de la página sea la del viewport (pantalla) */
-        display: flex;                      /* Utiliza Flexbox para alinear los elementos de la lista en una fila */
-        flex-direction: column;             /* Alinea los hijos (cabecera, navegación, etc.) verticalmente */
-        /********************************************************************************/
-        background: var(--background-color);
-        align-items: center;
-        text-align: center;
-    }
-
-/**************************/
-/* Estilos de la cabecera */
-/**************************/
-
-    header {
-        width: 100%;
-        background: var(--background-header-color);
-        padding: 15px 0;
-        text-align: center;
-        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-    }
-
-    header h1 {
-        color: var(--text-color);
-        font-size: 1.625rem;
-        font-weight: bold;
-    }
-
-/*****************************/
-/* Estilos del pie de página */
-/*****************************/
-
-footer {
+/* --- NAVBAR --- */
+.navbar {
+    position: fixed;
+    top: 0;
     width: 100%;
-    background: var(--background-header-color);
-    padding: 15px 0;
-    text-align: center;
-    color: var(--text-color);
-    font-size: 0.875rem;
-    box-shadow: 0px -4px 10px rgba(0, 0, 0, 0.2);
+    padding: 1.5rem 5%;
+    z-index: 1000;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255,255,255,0.05);
 }
 
-/************************/
-/* Estilos para el main */
-/************************/
+.nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1400px;
+    margin: 0 auto;
+}
 
-    main {
-        flex: 1;        /* Hace que el contenido principal crezca para llenar el espacio disponible, es decir, el body ocupará el espacio total entre header y footer */
-        display: flex;
-        width: 90%;
-        max-width: 900px;
-        height: 80vh;
-        background: var(--background-main-color);
-        border-radius: 10px;
-        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-        overflow: hidden;
-        margin: 20px;
-    }
+.logo {
+    font-size: 1.5rem;
+    font-weight: 900;
+    letter-spacing: -1px;
+}
 
-    .panel-lateral {
-        width: 30%;
-        background: var(--backgorund-left-main-color);
-        padding: 20px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 10px;
-        color: var(--text-color);
-    }
+.logo span {
+    color: var(--primary);
+}
 
-    .panel-lateral h2 {
-        font-size: 1.125rem;
-        margin-bottom: 10px;
-    }
+.nav-menu {
+    display: flex;
+    list-style: none;
+    align-items: center;
+    gap: 2.5rem;
+}
 
-    input {
-        padding: 8px;
-        width: 100%;
-        border: 1px solid var(--background-button-color);
-        border-radius: 5px;
-        font-size: 0.875rem;
-        margin-bottom: 5px;
-    }
+.nav-menu a {
+    text-decoration: none;
+    color: var(--text-white);
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    transition: 0.3s ease;
+}
 
-    button {
-        background: var(--background-button-color);
-        color: var(--text-color);
-        padding: 8px;
-        width: 100%;
-        border: none;
-        border-radius: 5px;
-        font-size: 0.875rem;
-        cursor: pointer;
-        transition: 0.3s;
-    }
+.nav-menu a:hover, .nav-menu a.active {
+    color: var(--primary);
+}
 
-    button:hover {
-        background: var(--background-button-hover-color);
-    }
+.nav-cta {
+    background: var(--primary);
+    padding: 0.8rem 1.5rem ;
+    border-radius: 4px;
+    color: white;
+}
 
-/****************************************************************************/
-/* Estilos para el panel donde se muestran los datos de la BD no relacional */
-/****************************************************************************/
+/* --- HERO SECTION --- */
+.hero {
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    padding: 0 10%;
+    position: relative;
+    background: url('https://images.unsplash.com/photo-1540497077202-7c8a3999166f?auto=format&fit=crop&q=80') center/cover no-repeat;
+}
 
-    .contenido-principal {
-        width: 70%;
-        padding: 20px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
+/* El truco del top 1%: Capas de degradado para legibilidad */
+.hero-overlay {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(90deg, rgba(10,10,10,0.9) 30%, rgba(10,10,10,0.2) 100%);
+    z-index: 1;
+}
 
-    .contenido-principal h1 {
-        font-size: 1.375rem;
-        color: var(--background-button-hover-color);
-        margin-bottom: 15px;
-    }
+.hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 700px;
+}
 
-    .contenedor-grid {
-        display: grid;
-        overflow-y: auto; /* Activa la barra de desplazamiento vertical */
-        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-        gap: 15px;
-        width: 100%;
-    }
+.badge {
+    background: rgba(255, 87, 34, 0.15);
+    color: var(--primary);
+    padding: 0.5rem 1rem;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 0.8rem;
+    border: 1px solid var(--primary);
+    display: inline-block;
+    margin-bottom: 1.5rem;
+}
 
-    .grid-item {
-        background: var(--background-grid-item-color);
-        color: var(--background-button-hover-color);
-        padding: 10px;
-        border-radius: 5px;
-        font-size: 0.875rem;
-        transition: transform 0.3s ease-in-out;
-        text-align: left;  /* Alinea el texto a la izquierda */
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start; /* Asegura que el contenido también se alinee a la izquierda */
-    }
+.hero h1 {
+    font-size: clamp(3rem, 8vw, 5.5rem);
+    line-height: 1;
+    font-weight: 900;
+    margin-bottom: 1.5rem;
+    letter-spacing: -2px;
+}
 
-    .grid-item:hover {
-        transform: scale(1.05);
-    }
+.text-gradient {
+    background: linear-gradient(to right, var(--primary), #FF8A65);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
 
-/*****************************/
-/* Estilos del panel lateral */
-/*****************************/
+.hero p {
+    font-size: 1.1rem;
+    color: var(--text-gray);
+    margin-bottom: 2.5rem;
+    max-width: 500px;
+    line-height: 1.6;
+}
 
-    /* Contenedor de Base de Datos */
-    .contenedor-BD, .contenedor-filtros {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 10px;
-        width: 100%;
-    }
+/* --- BUTTONS --- */
+.hero-btns {
+    display: flex;
+    gap: 1.5rem;
+}
 
-    /* Imágenes de Base de Datos y Filtros */
-    .imagen-BD, .imagen-filtros {
-        width: 40px;
-        height: auto;
-    }
+.btn {
+    padding: 1.2rem 2.5rem;
+    border-radius: 4px;
+    font-weight: 800;
+    text-transform: uppercase;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: transform 0.2s, background 0.3s;
+}
 
-    /* Botones con imágenes */
-    .boton-filtro {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-        background: var(--background-button-color);
-        color: var(--text-color);
-        padding: 8px;
-        width: 100%;
-        border: none;
-        border-radius: 5px;
-        font-size: 0.875rem;
-        cursor: pointer;
-        transition: 0.3s;
-    }
+.btn-solid {
+    background: var(--primary);
+    color: white;
+}
 
-    .boton-filtro:hover {
-        background: var(--background-button-hover-color);
-    }
+.btn-solid:hover {
+    background: var(--primary-dark);
+    transform: translateY(-3px);
+}
 
-    /* Íconos dentro de los botones */
-    .imagen-boton {
-        width: 20px;
-        height: auto;
-    }
+.btn-ghost {
+    border: 2px solid white;
+    color: white;
+}
 
-/**************/
-/* Responsive */
-/**************/
+.btn-ghost:hover {
+    background: white;
+    color: black;
+}
 
+/* --- STATS BAR --- */
+.hero-stats {
+    position: absolute;
+    bottom: 50px;
+    right: 10%;
+    display: flex;
+    gap: 4rem;
+    z-index: 2;
+}
+
+.stat-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.stat-number {
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: var(--primary);
+}
+
+.stat-label {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    color: var(--text-gray);
+    letter-spacing: 1px;
+}
+
+/* Mobile Responsive */
 @media (max-width: 768px) {
-    .main {
-        flex-direction: column;
-        height: auto;
-    }
-    .panel-lateral, .content {
-        width: 100%;
-    }
+    .nav-menu { display: none; }
+    .hero { text-align: center; padding: 0 5%; justify-content: center; }
+    .hero-overlay { background: rgba(0,0,0,0.7); }
+    .hero-btns { flex-direction: column; width: 100%; }
+    .hero-stats { display: none; }
 }

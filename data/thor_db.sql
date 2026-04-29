@@ -25,7 +25,7 @@ CREATE TABLE membresia (
 CREATE TABLE usuario (
   id_usuario INT NOT NULL AUTO_INCREMENT,
   email VARCHAR(150) NOT NULL UNIQUE,
-  telefono VARCHAR(20),
+  telefono VARCHAR(20) NOT NULL,
   password_hash VARCHAR(255) NOT NULL,
   rol ENUM('socio','entrenador') NOT NULL,
   PRIMARY KEY (id_usuario)

@@ -57,16 +57,13 @@ mysql -u root -p < thor_db.sql
 - MySQL
 - Git / GitHub
 
-### ‼️ Esta es la idea básica y principal de la app, se ira añadiendo y modificando cosas durante el desarrollo.
-
-
 ## Control de cambios
 
 ### Añadido
 - Endpoint GET /usuarios para listar usuarios desde la base de datos.
 
 ### Modificado
-- Tabla usuarios: añadido campo email.
+- Tabla usuarios: añadido telefono NN.
 - Estructura del proyecto: separación entre frontend y backend.
 
 ### Eliminado
@@ -74,3 +71,10 @@ mysql -u root -p < thor_db.sql
 
 ### Justificación de los cambios realizados
 Se han realizado estos cambios para adaptar la base de datos a las necesidades reales de la aplicación y comenzar la conexión entre frontend, backend y MySQL.
+
+
+
+
+### ‼️ Esta es la idea básica y principal de la app, se ira añadiendo y modificando cosas durante el desarrollo.
+
+
