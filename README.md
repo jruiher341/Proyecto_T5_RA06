@@ -65,7 +65,7 @@ mysql -u root -p < thor_db.sql
 ### Modificado
 - Tabla usuarios: añadido telefono NN.
 - Estructura del proyecto: separación entre frontend y backend.
-
+- Cambio de estructura de server.js a la carpeta backend.
 ### Eliminado
 - Tabla temporaltest, ya que no era necesaria para el funcionamiento del proyecto.
 
