@@ -60,6 +60,7 @@ mysql -u root -p < thor_db.sql
 ## Control de cambios
 
 ### Añadido
+- Se ha creado el docker-compose.yml para poder acceder al phpmyadmin y enlazar la base de datos ya creada.
 - Endpoint GET /usuarios para listar usuarios desde la base de datos.
 
 ### Modificado
