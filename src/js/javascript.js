@@ -10,14 +10,14 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             return response.json();
         })
-        .then(data => {
-            // Visualización en pantalla de los datos [cite: 329]
-            data.forEach(item => {
-                const p = document.createElement('p');
-                p.textContent = `Elemento: ${item.nombre_campo}`; 
-                contenedor.appendChild(p);
-            });
-        })
+      // En javascript.js
+    .then(data => {
+        data.forEach(item => {
+            const p = document.createElement('p');
+            p.textContent = `Gimnasio: ${item.nombre} - Tel: ${item.telefono}`; 
+            contenedor.appendChild(p);
+    });
+})
         .catch(error => {
             console.error('Hubo un problema con la petición fetch:', error); [cite, 223]
         });

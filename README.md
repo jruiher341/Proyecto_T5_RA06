@@ -62,7 +62,7 @@ mysql -u root -p < thor_db.sql
 ### Añadido
 - Se ha creado el docker-compose.yml para poder acceder al phpmyadmin y enlazar la base de datos ya creada.
 - Endpoint GET /usuarios para listar usuarios desde la base de datos.
-
+- Script SQL con la estructura completa de Thor Fitness (socios, entrenadores, actividades).
 ### Modificado
 - Tabla usuarios: añadido telefono NN.
 - Estructura del proyecto: separación entre frontend y backend.
