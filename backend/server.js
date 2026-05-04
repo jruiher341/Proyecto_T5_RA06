@@ -15,10 +15,10 @@ app.use(express.static(path.join(__dirname, '../src')));
 
 // CONFIGURACIÓN DE CONEXIÓN [cite: 48, 117]
 const connection = mysql.createConnection({
-    host: 'localhost',
-    user: 'profesor',
-    password: 'tu_password',
-    database: 'nombre_tu_db'
+    host: 'db',
+    user: 'root',
+    password: 'thor', 
+    database: 'thor_db'
 });
 
 // ENDPOINT GET: Listar datos [cite: 279]

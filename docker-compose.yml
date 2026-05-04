@@ -1,6 +1,17 @@
 version: '3.8'
 
 services:
+  # App Node.js
+  app:
+    build: .
+    container_name: thor_app
+    ports:
+      - "3000:3000" # Puerto local : Puerto contenedor
+    environment:
+      - DB_HOST=db
+    depends_on:
+      - db
+
   # Base de Datos
   db:
     image: mysql:8.0
