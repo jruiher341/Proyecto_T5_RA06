@@ -1,24 +1,20 @@
-# Usamos una imagen ligera de Node.js
 FROM node:18-slim
 
-# Instalamos pnpm
-RUN npm install -g pnpm@10.33.0
+# Instalamos la versión exacta que pide tu package.json
+RUN npm install -g pnpm@10.33.0 
 
-# Directorio de trabajo dentro del contenedor
 WORKDIR /app
 
 # Copiamos los archivos de dependencias
-COPY package*.json ./
-COPY pnpm-lock.yaml* ./
+# Quitamos el pnpm-lock.yaml de aquí si no lo tienes en tu carpeta local
+COPY package.json ./
 
-# Instalamos las dependencias
-RUN pnpm install --frozen-lockfile
+# Instalamos sin el flag --frozen-lockfile para que lo genere él mismo
+RUN pnpm install
 
-# Copiamos el resto del código (backend y frontend)
+# Copiamos el resto del código
 COPY . .
 
-# Exponemos el puerto que usa tu server.js
 EXPOSE 3000
 
-# Comando para arrancar la app
 CMD ["node", "backend/server.js"]
