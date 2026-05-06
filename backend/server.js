@@ -22,13 +22,12 @@ const connection = mysql.createConnection({
 });
 
 // ENDPOINT GET: Listar datos [cite: 279]
+// En server.js
 app.get('/api/datos', (req, res) => {
-    const query = 'SELECT * FROM tu_tabla';
+    const query = 'SELECT * FROM centro'; 
     connection.query(query, (err, results) => {
-        if (err) {
-            return res.status(500).json({ error: 'Error en la base de datos' });
-        }
-        res.json(results); // Envío en formato JSON obligatorio
+        if (err) return res.status(500).json({ error: err.message });
+        res.json(results);
     });
 });
 
