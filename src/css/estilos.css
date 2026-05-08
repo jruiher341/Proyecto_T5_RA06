@@ -7,18 +7,22 @@
 :root {
     --primario: #FF5722;
     --primario-oscuro: #E64A19;
+    --background-dark: #1d1d1d;
     --blanco: #FFFFFF;
     --subtitulo: #A0A0A0;
     --text-font: 'Inter', sans-serif;
 }
 
-
-
 body {
-    background-color: var(--bg-dark);
+    background-color: var(--background-dark);
     font-family: var(--text-font);
     color: var(--blanco);
-    overflow-x: hidden;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
 }
 
 /* --- Barra de navegación --- */
@@ -87,6 +91,7 @@ body {
     padding: 0 10%;
     position: relative;
     background: url('https://images.unsplash.com/photo-1540497077202-7c8a3999166f?auto=format&fit=crop&q=80') center/cover no-repeat;
+    border-bottom: 3px solid gray;
 }
 
 /* Overley gradiente */
@@ -190,6 +195,36 @@ body {
     letter-spacing: 1px;
 }
 
+/* GIMNASIOS */
+.seccion-datos {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.centro-card {
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    align-items: center;
+    justify-content: center;
+    border: 3px solid #ccc;
+    border-radius: 8px;
+    padding: 1rem;
+}
+
+.centro-card h3 {
+  margin: 0 0 0.5rem;
+}
+
+.centro-card p {
+  margin: 0.25rem 0;
+  font-size: 0.9rem;
+  color: #555;
+}
+
 /* FORMULARIO */
 
 
@@ -235,22 +270,6 @@ label {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
   gap: 1rem;
-}
-
-.centro-card {
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  padding: 1rem;
-}
-
-.centro-card h3 {
-  margin: 0 0 0.5rem;
-}
-
-.centro-card p {
-  margin: 0.25rem 0;
-  font-size: 0.9rem;
-  color: #555;
 }
 
 input,
