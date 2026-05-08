@@ -5,6 +5,7 @@ services:
   app:
     build: .
     container_name: thor_app
+    restart: always
     ports:
       - "3000:3000" # Puerto local : Puerto contenedor
     environment:
