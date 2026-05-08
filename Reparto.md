@@ -20,7 +20,7 @@ Para asegurar un aprendizaje integral y cumplir con los requisitos del proyecto,
 
 ## 👤 Yeray
 ### Base de Datos y Documentación
-- **Modelo de Datos:** Creación del archivo SQL (`data/ejemplo_usuarios.sql`) con las tablas necesarias y datos de prueba.
+- **Modelo de Datos:** Creación del archivo SQL con las tablas necesarias y datos de prueba.
 - **Entorno WSL:** Configuración del servidor MySQL en Debian y gestión de permisos del usuario 'profesor'.
 - **Documentación:** Redacción del `README.md` (Control de cambios) y comentarios de código en formato Doxygen.
 
@@ -32,5 +32,5 @@ Para asegurar un aprendizaje integral y cumplir con los requisitos del proyecto,
 
 ## Tareas compartidas (Sincronización)
 - **Depuración:** Pruebas conjuntas del flujo completo (Frontend <-> Backend <-> MySQL).
-- **Git:** Gestión de ramas y resolución de conflictos en el repositorio de GitHub Classroom.
+- **Git:** Gestión de ramas y resolución de conflictos en el repositorio compartido ya que se hizo ramas de prueba que despues fueron implementadas a la principal.
 - **Revisión final:** Comprobación de que se cumplen todos los requisitos técnicos del RA 6.
