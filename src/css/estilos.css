@@ -8,13 +8,17 @@
 :root {
     --primario: #FF5722;
     --primario-oscuro: #E64A19;
-    --background-dark: #1d1d1d;
+    --background-dark: #303030;
+    --background-box: #1d1d1d;
     --blanco: #FFFFFF;
     --subtitulo: #A0A0A0;
     --text-font: 'Inter', sans-serif;
 }
 
 body {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
     background-color: var(--background-dark);
     font-family: var(--text-font);
     color: var(--blanco);
@@ -333,6 +337,37 @@ input[type="submit"] {
 
 input[type="file"] {
   padding: 1px 2px;
+}
+
+
+footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    border-top: 1px solid var(--primario);
+    background-color: var(--background-box);
+    padding: 10px;
+}
+
+.redes-sociales {
+    margin-top: 10px;
+}
+
+.redes-sociales a {
+    margin: 0 5px;
+    text-decoration: none;
+}
+
+.redes-sociales img {
+    width: 32px;
+    height: 32px;
+    transition: all 0.3s ease-in;
+}
+
+.redes-sociales img:hover{
+    transform: scale(1.1);
 }
 
 
