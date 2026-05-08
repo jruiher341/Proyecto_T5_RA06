@@ -15,36 +15,63 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, '../src')));
 
 // CONFIGURACIÓN DE CONEXIÓN [cite: 48, 117]
-const connection = mysql.createConnection({
-    host: process.env.DB_HOST || 'localhost',
-    user: process.env.DB_USER || 'root',
-    password: process.env.DB_PASSWORD || 'thor',
-    database: process.env.DB_NAME || 'thor_db'
+// const connection = mysql.createConnection({
+//     host: process.env.DB_HOST || 'localhost',
+//     user: process.env.DB_USER || 'root',
+//     password: process.env.DB_PASSWORD || 'thor',
+//     database: process.env.DB_NAME || 'thor_db'
+// });
+
+const pool_mysql = mysql.createPool({
+    host: "localhost", // Dirección del servidor
+    port: 3306, // Puerto al que nos conectamos en MySQL
+    user: "root", // Usuario al que nos conectamos
+    password: "", // Contraseña del usuario al que nos conectamos
+    database: "thor_db", // Nombre de la base de datos que nos
+    waitForConnections: true,
+    connectionLimit: 10, // Define el máximo de conexiones simultáneas
+    queueLimit: 0
 });
+
+pool_mysql.getConnection((error, connection) => {
+    if (error) {
+        console.error("Error conectando a MySQL:", error);
+        process.exit(1); // Si falla la BD, cerramos el servidor
+    }
+    connection.release();
+    // Iniciamos el servidor en el puerto especificado
+    app.listen(PORT, () => {
+        // Confirmación en la consola de que se ha lanzado el servidor OK
+        console.log(`Conectado a MySQL. Servidor corriendo en
+http://localhost:${PORT}`);
+    });
+});
+
+
 
 // Conectar a la base de datos
-connection.connect((err) => {
-    if (err) {
-        console.error('Error conectando a la base de datos:', err.message);
-        setTimeout(() => connection.connect(), 2000);
-    } else {
-        console.log('Conectado a la base de datos MySQL');
-    }
-});
+// connection.connect((err) => {
+//     if (err) {
+//         console.error('Error conectando a la base de datos:', err.message);
+//         setTimeout(() => connection.connect(), 2000);
+//     } else {
+//         console.log('Conectado a la base de datos MySQL');
+//     }
+// });
 
 // Manejar desconexiones inesperadas
-connection.on('error', (err) => {
-    console.error('Error de conexión a la BD:', err.message);
-    if (err.code === 'PROTOCOL_CONNECTION_LOST') {
-        connection.connect();
-    }
-});
+// connection.on('error', (err) => {
+//     console.error('Error de conexión a la BD:', err.message);
+//     if (err.code === 'PROTOCOL_CONNECTION_LOST') {
+//         connection.connect();
+//     }
+// });
 
 // ENDPOINT GET: Listar datos [cite: 279]
 // En server.js
 app.get('/api/datos', (req, res) => {
     const query = 'SELECT * FROM centro';
-    connection.query(query, (err, results) => {
+    pool_mysql.query(query, (err, results) => {
         if (err) {
             console.error('Error en la consulta:', err.message);
             return res.status(500).json({ error: err.message });

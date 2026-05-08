@@ -38,8 +38,9 @@ CREATE TABLE socio (
   nombre VARCHAR(100) NOT NULL,
   telefono VARCHAR(20),
   id_membresia INT NOT NULL,
+  id_centro INT NOT NULL,
   PRIMARY KEY (id_socio),
-  FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario) ON DELETE CASCADE,
+  FOREIGN KEY (id_centro) REFERENCES centro(id_centro) ON DELETE CASCADE,
   FOREIGN KEY (id_membresia) REFERENCES membresia(id_membresia)
 ) ENGINE=INNODB;
 
