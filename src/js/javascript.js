@@ -1,14 +1,16 @@
 // src/js/javascript.js
 document.addEventListener('DOMContentLoaded', () => {
     const contenedor = document.getElementById('datos-gym');
-
+    const API_URL = 'http://localhost:3000'; // URL del endpoint en el backend
+    
     if (!contenedor) {
         console.warn('Elemento #datos-gym no encontrado en el DOM');
         return;
     }
 
     // Petición al backend usando fetch y .then() [cite: 221, 222]
-    fetch('http://localhost:3000/api/datos')
+
+  fetch(`${API_URL}/api/datos`)
         .then(response => {
             if (!response.ok) {
                 throw new Error('Error en la respuesta de la red: ' + response.status);
