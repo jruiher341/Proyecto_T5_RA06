@@ -69,7 +69,7 @@ http://localhost:${PORT}`);
 
 // ENDPOINT GET: Listar datos [cite: 279]
 // En server.js
-app.get('/api/datos', (req, res) => {
+app.get('/api/centros', (req, res) => {
     const query = 'SELECT * FROM centro';
     pool_mysql.query(query, (err, results) => {
         if (err) {
