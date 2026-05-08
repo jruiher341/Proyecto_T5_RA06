@@ -9,6 +9,10 @@ services:
       - "3000:3000" # Puerto local : Puerto contenedor
     environment:
       - DB_HOST=db
+      - DB_USER=root
+      - DB_PASSWORD=thor
+      - DB_NAME=thor_db
+      - NODE_ENV=production
     depends_on:
       - db
 
