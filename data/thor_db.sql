@@ -1,147 +1,102 @@
--- Crear y usar la base de datos ejemplo_usuarios
-CREATE DATABASE thor_db;
+CREATE DATABASE IF NOT EXISTS thor_db;
 USE thor_db;
 
--- CENTRO
+-- 1. Tabla: centro
 CREATE TABLE centro (
-  id_centro INT NOT NULL AUTO_INCREMENT,
-  nombre VARCHAR(100) NOT NULL,
-  direccion VARCHAR(200) NOT NULL,
-  telefono VARCHAR(20),
-  email VARCHAR(100),
-  PRIMARY KEY (id_centro)
-) ENGINE=INNODB;
+    CodCen INT NOT NULL AUTO_INCREMENT,
+    CenNom VARCHAR(100),
+    CenDir VARCHAR(200),
+    CenEma VARCHAR(100),
+    CenTel VARCHAR(20),
+    CenHor VARCHAR(45),
+    PRIMARY KEY (CodCen)
+) ENGINE=InnoDB;
 
--- MEMBRESIA
+-- 2. Tabla: membresia
 CREATE TABLE membresia (
-  id_membresia INT NOT NULL AUTO_INCREMENT,
-  nombre VARCHAR(100) NOT NULL,
-  duracion_dias INT NOT NULL,
-  precio DECIMAL(8,2) NOT NULL,
-  PRIMARY KEY (id_membresia)
-) ENGINE=INNODB;
+    CodMem INT NOT NULL AUTO_INCREMENT,
+    MemNom VARCHAR(100),
+    MemDur INT,
+    MemPre DECIMAL(35, 2), -- Ajustado con decimales para moneda
+    PRIMARY KEY (CodMem)
+) ENGINE=InnoDB;
 
--- USUARIO
+-- 3. Tabla: usuario
+-- Nota: Esta tabla es central para 'entrenador' y 'socio'
 CREATE TABLE usuario (
-  id_usuario INT NOT NULL AUTO_INCREMENT,
-  email VARCHAR(150) NOT NULL UNIQUE,
-  telefono VARCHAR(20) NOT NULL,
-  password_hash VARCHAR(255) NOT NULL,
-  rol ENUM('socio','entrenador') NOT NULL,
-  PRIMARY KEY (id_usuario)
-) ENGINE=INNODB;
+    CodUsu INT NOT NULL AUTO_INCREMENT,
+    UsuCon VARCHAR(255),
+    UsuTel VARCHAR(20),
+    UsuEma VARCHAR(150),
+    UsuNom VARCHAR(45),
+    UsuApe VARCHAR(45),
+    UsuRol VARCHAR(45),
+    UsuDNI VARCHAR(45),
+    PRIMARY KEY (CodUsu)
+) ENGINE=InnoDB;
 
--- SOCIO
-CREATE TABLE socio (
-  id_socio INT NOT NULL AUTO_INCREMENT,
-  id_usuario INT NOT NULL UNIQUE,
-  nombre VARCHAR(100) NOT NULL,
-  telefono VARCHAR(20),
-  id_membresia INT NOT NULL,
-  id_centro INT NOT NULL,
-  PRIMARY KEY (id_socio),
-  FOREIGN KEY (id_centro) REFERENCES centro(id_centro) ON DELETE CASCADE,
-  FOREIGN KEY (id_membresia) REFERENCES membresia(id_membresia)
-) ENGINE=INNODB;
-
--- ENTRENADOR
+-- 4. Tabla: entrenador
+-- Relaciona centro y usuario
 CREATE TABLE entrenador (
-  id_entrenador INT NOT NULL AUTO_INCREMENT,
-  id_usuario INT NOT NULL UNIQUE,
-  nombre VARCHAR(100) NOT NULL,
-  especialidad VARCHAR(100),
-  id_centro INT NOT NULL,
-  PRIMARY KEY (id_entrenador),
-  FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario) ON DELETE CASCADE,
-  FOREIGN KEY (id_centro) REFERENCES centro(id_centro)
-) ENGINE=INNODB;
+    EntEsp VARCHAR(100),
+    usuario_CodUsu INT NOT NULL,
+    centro_CodCen INT NOT NULL,
+    PRIMARY KEY (usuario_CodUsu),
+    CONSTRAINT fk_entrenador_usuario
+        FOREIGN KEY (usuario_CodUsu)
+        REFERENCES usuario (CodUsu)
+        ON DELETE CASCADE,
+    CONSTRAINT fk_entrenador_centro
+        FOREIGN KEY (centro_CodCen)
+        REFERENCES centro (CodCen)
+) ENGINE=InnoDB;
 
--- SALA
-CREATE TABLE sala (
-  id_sala INT NOT NULL AUTO_INCREMENT,
-  nombre VARCHAR(100) NOT NULL,
-  id_centro INT NOT NULL,
-  PRIMARY KEY (id_sala),
-  FOREIGN KEY (id_centro) REFERENCES centro(id_centro)
-) ENGINE=INNODB;
+-- 5. Tabla: socio
+-- Relaciona usuario y membresia
+CREATE TABLE socio (
+    usuario_CodUsu INT NOT NULL,
+    membresia_CodMem INT NOT NULL,
+    PRIMARY KEY (usuario_CodUsu),
+    CONSTRAINT fk_socio_usuario
+        FOREIGN KEY (usuario_CodUsu)
+        REFERENCES usuario (CodUsu)
+        ON DELETE CASCADE,
+    CONSTRAINT fk_socio_membresia
+        FOREIGN KEY (membresia_CodMem)
+        REFERENCES membresia (CodMem)
+) ENGINE=InnoDB;
 
--- ACTIVIDAD (SIN entrenador directo)
-CREATE TABLE actividad (
-  id_actividad INT NOT NULL AUTO_INCREMENT,
-  nombre VARCHAR(100) NOT NULL,
-  horario DATETIME NOT NULL,
-  id_centro INT NOT NULL,
-  id_sala INT NOT NULL,
-  PRIMARY KEY (id_actividad),
-  FOREIGN KEY (id_centro) REFERENCES centro(id_centro),
-  FOREIGN KEY (id_sala) REFERENCES sala(id_sala)
-) ENGINE=INNODB;
+-- VALORES --
 
--- RELACIÓN N:M ENTRENADOR - ACTIVIDAD
-CREATE TABLE entrenador_actividad (
-  id_entrenador INT NOT NULL,
-  id_actividad INT NOT NULL,
-  PRIMARY KEY (id_entrenador, id_actividad),
-  FOREIGN KEY (id_entrenador) REFERENCES entrenador(id_entrenador) ON DELETE CASCADE,
-  FOREIGN KEY (id_actividad) REFERENCES actividad(id_actividad) ON DELETE CASCADE
-) ENGINE=INNODB;
+-- 1. Insertar Centros
+INSERT INTO centro (CenNom, CenDir, CenEma, CenTel, CenHor) VALUES 
+('Gym Central', 'Av. Principal 123', 'contacto@gymcentral.com', '912345678', '06:00 - 22:00'),
+('Fitness Norte', 'Calle Norte 45', 'info@fitnorte.com', '987654321', '08:00 - 20:00');
 
--- INSCRIPCION (N:M SOCIO - ACTIVIDAD)
-CREATE TABLE inscripcion (
-  id_socio INT NOT NULL,
-  id_actividad INT NOT NULL,
-  fecha_inscripcion DATE NOT NULL DEFAULT (CURRENT_DATE),
-  PRIMARY KEY (id_socio, id_actividad),
-  FOREIGN KEY (id_socio) REFERENCES socio(id_socio) ON DELETE CASCADE,
-  FOREIGN KEY (id_actividad) REFERENCES actividad(id_actividad) ON DELETE CASCADE
-) ENGINE=INNODB;
+-- 2. Insertar Membresías
+INSERT INTO membresia (MemNom, MemDur, MemPre) VALUES 
+('Plan Básico', 30, 29.99),
+('Plan Premium', 90, 75.50),
+('Plan Anual VIP', 365, 250.00);
 
--- INSERTS de la tabla centro
-INSERT INTO centro (nombre, direccion, telefono, email) VALUES
-('Thor Fitness Madrid', 'Calle Gran Vía 25, Madrid', '911111111', 'madrid@thorfitness.com'),
-('Thor Fitness Barcelona', 'Avenida Diagonal 120, Barcelona', '922222222', 'barcelona@thorfitness.com'),
-('Thor Fitness Valencia', 'Calle Colón 18, Valencia', '933333333', 'valencia@thorfitness.com');
+-- 3. Insertar Usuarios
+-- Crearemos 4 usuarios: 2 entrenadores y 2 socios
+INSERT INTO usuario (UsuCon, UsuTel, UsuEma, UsuNom, UsuApe, UsuRol, UsuDNI) VALUES 
+('pass123', '600111222', 'carlos.ent@email.com', 'Carlos', 'García', 'Entrenador', '12345678A'),
+('pass456', '600333444', 'elena.ent@email.com', 'Elena', 'Pérez', 'Entrenador', '87654321B'),
+('pass789', '600555666', 'juan.socio@email.com', 'Juan', 'López', 'Socio', '11223344C'),
+('pass000', '600777888', 'marta.socia@email.com', 'Marta', 'Ruiz', 'Socio', '44332211D');
 
--- INSERTS de la tabla membresia
-INSERT INTO membresia (nombre, duracion_dias, precio) VALUES
-('Básica', 30, 29.99),
-('Premium', 90, 79.99),
-('Anual', 365, 249.99);
+-- 4. Insertar Entrenadores
+-- Carlos (CodUsu 1) trabaja en el centro 1
+-- Elena (CodUsu 2) trabaja en el centro 2
+INSERT INTO entrenador (EntEsp, usuario_CodUsu, centro_CodCen) VALUES 
+('Musculación y Powerlifting', 1, 1),
+('Yoga y Pilates', 2, 2);
 
--- INSERTS de la tabla usuario
-INSERT INTO usuario (email, telefono, password_hash, rol) VALUES
-('juan@email.com', '600111111', 'hash123', 'socio'),
-('maria@email.com', '600222222', 'hash123', 'socio'),
-('pedro@email.com', '600333333', 'hash123', 'socio'),
-('laura@email.com', '600444444', 'hash123', 'entrenador'),
-('carlos@email.com', '600555555', 'hash123', 'entrenador');
-
--- INSERTS de la tabla socio
-INSERT INTO socio (id_usuario, nombre, telefono, id_centro, id_membresia) VALUES
-(1, 'JuanINSERTS Pérez', '600111111', 1, 1),
-(2, 'María López', '600222222', 2, 2),
-(3, 'Pedro Sánchez', '600333333', 3, 3);
-
--- INSERTS de la tabla entrenador
-INSERT INTO entrenador (id_usuario, nombre, especialidad, id_centro) VALUES
-(4, 'Laura Gómez', 'Crossfit', 1),
-(5, 'Carlos Ruiz', 'Yoga', 2);
-
--- INSERTS de la tabla sala
-INSERT INTO sala (nombre, id_centro) VALUES
-('Sala Crossfit', 1),
-('Sala Yoga', 2),
-('Sala Cardio', 3);
-
--- INSERTS de la tabla actividad
-INSERT INTO actividad (nombre, horario, id_centro, id_sala, id_entrenador) VALUES
-('Crossfit Avanzado', '2026-05-01 10:00:00', 1, 1, 1),
-('Yoga Relax', '2026-05-01 12:00:00', 2, 2, 2),
-('Cardio Intenso', '2026-05-01 18:00:00', 3, 3, 1);
-
--- INSERTS de la tabla inscripcion
-INSERT INTO inscripcion (id_socio, id_actividad, fecha_inscripcion) VALUES
-(1, 1, '2026-04-20'),
-(2, 2, '2026-04-21'),
-(3, 3, '2026-04-22'),
-(1, 3, '2026-04-22');
+-- 5. Insertar Socios
+-- Juan (CodUsu 3) tiene membresía Básica (CodMem 1)
+-- Marta (CodUsu 4) tiene membresía Premium (CodMem 2)
+INSERT INTO socio (usuario_CodUsu, membresia_CodMem) VALUES 
+(3, 1),
+(4, 2);
