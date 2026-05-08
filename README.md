@@ -61,17 +61,24 @@ mysql -u root -p < thor_db.sql
 
 ### Añadido
 - Se ha creado el docker-compose.yml para poder acceder al phpmyadmin y enlazar la base de datos ya creada.
-- Endpoint GET /usuarios para listar usuarios desde la base de datos.
-- Script SQL con la estructura completa de Thor Fitness (socios, entrenadores, actividades).
+- Endpoint GET /centros para listar los gimnasios desde la base de datos.
+- Creación del index html con con el primer GET de la base de datos (siendo esta demostración de los centros solo una versión beta de la final).
+- Creación del .dockerignore.
+- Otras paginas y logo para la WEB (condiciones.html, gimnasios.html, sobre-nosotros.html y unete.html).
+
 ### Modificado
-- Tabla usuarios: añadido telefono NN.
+- Arreglo de relaciones y eliminación de tablas innecesarias para el proyecto de la base de datos.
 - Estructura del proyecto: separación entre frontend y backend.
 - Cambio de estructura de server.js a la carpeta backend.
+- Corrección de las conexiones entre el backend y el frontend.
+
 ### Eliminado
 - Tabla temporaltest, ya que no era necesaria para el funcionamiento del proyecto.
+- La carpeta node_modules, ya que para no tener que cargarlo dentro del proyecto descargamos la imagen de node en el contenedor del proyecto en docker.
 
 ### Justificación de los cambios realizados
-Se han realizado estos cambios para adaptar la base de datos a las necesidades reales de la aplicación y comenzar la conexión entre frontend, backend y MySQL.
+- Se han realizado estos cambios para adaptar la base de datos a las necesidades reales de la aplicación y comenzar la conexión entre frontend, backend y MySQL.
+- .dockerignorepara que al ejecutar solo copie consigo los archivos correctos (así evitando tiempos de carga mas lentos por archivos que no van a ser procesador posteriormente en el cliente, como el .gitignore u otros..).
 
 
 
