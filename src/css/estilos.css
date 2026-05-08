@@ -2,6 +2,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    scroll-behavior: smooth;
 }
 
 :root {
@@ -82,12 +83,18 @@ main {
     color: white;
 }
 
+.login:hover {
+    color: var(--primario);
+    background-color: var(--background-dark);
+}
+
 /* --- Principal --- */
 .hero {
     height: 100vh;
     width: 100%;
     display: flex;
     align-items: center;
+    gap: 3rem;
     padding: 0 10%;
     position: relative;
     background: url('https://images.unsplash.com/photo-1540497077202-7c8a3999166f?auto=format&fit=crop&q=80') center/cover no-repeat;
@@ -95,7 +102,7 @@ main {
 }
 
 /* Overley gradiente */
-.overlay {
+.hero .overlay {
     position: absolute;
     top: 0; 
     left: 0; 
@@ -109,6 +116,11 @@ main {
     position: relative;
     z-index: 2;
     max-width: 700px;
+}
+
+.hero img {
+    z-index: 2;
+    width: 300px;
 }
 
 .hero h1 {
@@ -206,15 +218,28 @@ main {
 
 .centro-card {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     width: 80%;
     align-items: center;
     justify-content: center;
     border: 3px solid #ccc;
     border-radius: 8px;
     padding: 1rem;
+    background: linear-gradient(90deg, rgba(225, 97, 13, 0.9) 20%, rgba(10,10,10,0.2) 35%);
 }
 
+/* Imagen GYM */
+.centro-card .img-gym {
+    width: 300px;
+    height: auto;
+}
+
+.centro-card .img-gym img {
+    width: 100px;
+    height: auto;
+}
+
+/* Descripcion GYM */
 .centro-card h3 {
   margin: 0 0 0.5rem;
 }
@@ -222,12 +247,15 @@ main {
 .centro-card p {
   margin: 0.25rem 0;
   font-size: 0.9rem;
-  color: #555;
+  color: var(--blanco);
+}
+
+/* Mapa GYM */
+.centro-card .ubicacion iframe{
+    color: var(--blanco);
 }
 
 /* FORMULARIO */
-
-
 .body-unete {
   width: 100%;
   height: 100vh;

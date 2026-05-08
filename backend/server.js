@@ -23,11 +23,11 @@ app.use(express.static(path.join(__dirname, '../src')));
 // });
 
 const pool_mysql = mysql.createPool({
-    host: "localhost", // Dirección del servidor
+    host: process.env.DB_HOST || "localhost", // Dirección del servidor
     port: 3306, // Puerto al que nos conectamos en MySQL
-    user: "root", // Usuario al que nos conectamos
-    password: "", // Contraseña del usuario al que nos conectamos
-    database: "thor_db", // Nombre de la base de datos que nos
+    user: process.env.DB_USER || "root", // Usuario al que nos conectamos
+    password: process.env.DB_PASSWORD || "thor", // Contraseña del usuario al que nos conectamos
+    database: process.env.DB_NAME || "thor_db", // Nombre de la base de datos que nos
     waitForConnections: true,
     connectionLimit: 10, // Define el máximo de conexiones simultáneas
     queueLimit: 0
@@ -86,7 +86,3 @@ app.use((err, req, res, next) => {
     res.status(500).json({ error: 'Error interno del servidor' });
 });
 
-// Iniciar servidor
-app.listen(PORT, () => {
-    console.log(`Servidor Thor Fitness en ${ENDPOINT_SERVER}:${PORT}`);
-});
