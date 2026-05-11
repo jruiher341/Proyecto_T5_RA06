@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Registration Form</title>
+    <link rel="stylesheet" href="../css/estilos.css" />
+</head>
+
+<body>
+    <main class="body-unete">
+        <nav class="barra-navegacion">
+            <div class="contenedor-nav">
+                <div class="logo"><img src="/src/assets/images/ThorFitness_logo.png" alt="image/png"></div>
+                <ul class="menu">
+                    <li><a href="#" class="active">Inicio</a></li>
+                    <li><a href="pages/gimnasios.html">Gimnasios</a></li>
+                    <li><a href="#">Precios</a></li>
+                    <li><a href="#">Sobre nosotros</a></li>
+                    <li><a href="pages/unete.html" class="login">ÚNETE AHORA</a></li>
+                </ul>
+            </div>
+        </nav>
+        <section class="form-box">
+            <h1>Formulario de Registro</h1>
+            <p>Por favor, complete este formulario con la información requerida</p>
+            <form method="post" action='condiciones.html' class="formulario-registro">
+                <fieldset>
+                    <label for="first-name">Ingrese su nombre: <input id="first-name" name="first-name" type="text"
+                            required /></label>
+                    <label for="last-name">Ingrese su apellido: <input id="last-name" name="last-name" type="text"
+                            required /></label>
+                    <label for="email">Ingrese su correo electrónico: <input id="email" name="email" type="email" required /></label>
+                    <label for="new-password">Cree una nueva contraseña: <input id="new-password" name="new-password"
+                            type="password" pattern="[a-z0-5]{8,}" required /></label>
+                </fieldset>
+                <fieldset>
+                    <legend>Account type (required)</legend>
+                    <label for="personal-account"><input id="personal-account" type="radio" name="account-type" class="inline"
+                            checked /> Usuario</label>
+                    <label for="business-account"><input id="business-account" type="radio" name="account-type"
+                            class="inline" /> Entrenador</label>
+                </fieldset>
+                <fieldset>
+                    <label for="profile-picture">Suba su foto de perfil: <input id="profile-picture" type="file"
+                            name="file" /></label>
+                    <label for="age">Ingrese su edad (años): <input id="age" type="number" name="age" min="13"
+                            max="120" /></label>
+                    <label for="referrer">¿Cómo se enteró de nosotros?
+                        <select id="referrer" name="referrer">
+                            <option value="">(seleccione una opción)</option>
+                            <option value="1">Google</option>
+                            <option value="2">YouTube</option>
+                            <option value="3">Instagram</option>
+                            <option value="4">Otra</option>
+                        </select>
+                    </label>
+                    <label for="bio">Escriba una biografía suya que describa sus intereses: <br />
+                        <textarea id="bio" name="bio" rows="3" cols="30" placeholder="Me gusta programar en la playa..."></textarea>
+                    </label>
+                </fieldset>
+                <label for="terms-and-conditions">
+                    <input class="inline" id="terms-and-conditions" type="checkbox" required name="terms-and-conditions" /> Acepto los <a href="condiciones.html" target="_blank">términos y condiciones</a>
+                </label>
+                <input type="submit" value="Submit" />
+            </form>
+        </section>
+    </main>
+</body>
+
+</html>

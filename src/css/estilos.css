@@ -27,6 +27,7 @@ body {
 main {
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: 1rem;
 }
 
@@ -211,7 +212,44 @@ main {
     letter-spacing: 1px;
 }
 
-/* GIMNASIOS */
+/*===============================
+            FOOTER
+=================================*/
+
+
+footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    border-top: 1px solid var(--primario);
+    background-color: var(--background-box);
+    padding: 10px;
+}
+
+.redes-sociales {
+    margin-top: 10px;
+}
+
+.redes-sociales a {
+    margin: 0 5px;
+    text-decoration: none;
+}
+
+.redes-sociales img {
+    width: 32px;
+    height: 32px;
+    transition: all 0.3s ease-in;
+}
+
+.redes-sociales img:hover{
+    transform: scale(1.1);
+}
+
+/*===============================
+            GIMNASIOS 
+=================================*/
 .seccion-datos {
     display: flex;
     flex-direction: column;
@@ -223,7 +261,8 @@ main {
 .centro-card {
     display: flex;
     flex-direction: row;
-    width: 80%;
+    gap: 5rem;
+    width: 100%;
     align-items: center;
     justify-content: center;
     border: 3px solid #ccc;
@@ -233,10 +272,6 @@ main {
 }
 
 /* Imagen GYM */
-.centro-card .img-gym {
-    width: 300px;
-    height: auto;
-}
 
 .centro-card .img-gym img {
     width: 100px;
@@ -259,7 +294,20 @@ main {
     color: var(--blanco);
 }
 
+/*===============================
+            LOGIN
+=================================*/
+
 /* FORMULARIO */
+
+.form-box {
+    display: flex;
+    flex-direction: column;
+    border: 3px solid white;
+    border-radius: 12px;
+    padding: 30px;
+}
+
 .body-unete {
   width: 100%;
   height: 100vh;
@@ -339,35 +387,6 @@ input[type="file"] {
 }
 
 
-footer {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    border-top: 1px solid var(--primario);
-    background-color: var(--background-box);
-    padding: 10px;
-}
-
-.redes-sociales {
-    margin-top: 10px;
-}
-
-.redes-sociales a {
-    margin: 0 5px;
-    text-decoration: none;
-}
-
-.redes-sociales img {
-    width: 32px;
-    height: 32px;
-    transition: all 0.3s ease-in;
-}
-
-.redes-sociales img:hover{
-    transform: scale(1.1);
-}
 
 
 /* Mobil */
