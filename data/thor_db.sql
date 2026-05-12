@@ -100,3 +100,10 @@ INSERT INTO entrenador (EntEsp, usuario_CodUsu, centro_CodCen) VALUES
 INSERT INTO socio (usuario_CodUsu, membresia_CodMem) VALUES 
 (3, 1),
 (4, 2);
+CREATE TABLE IF NOT EXISTS socios (
+    id_socio INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100),
+    email VARCHAR(100),
+    telefono VARCHAR(20),
+    id_membresia INT
+);
