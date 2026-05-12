@@ -10,7 +10,6 @@ const ENDPOINT_SERVER = "http://localhost"; // URL base de nuestro servidor
 const app = express();
 app.use(cors());
 app.use(express.json());
-
 // Servir archivos estáticos del frontend
 app.use(express.static(path.join(__dirname, '../src')));
 
@@ -26,7 +25,7 @@ const pool_mysql = mysql.createPool({
     host: process.env.DB_HOST || "localhost", // Dirección del servidor
     port: 3306, // Puerto al que nos conectamos en MySQL
     user: process.env.DB_USER || "root", // Usuario al que nos conectamos
-    password: process.env.DB_PASSWORD || "thor", // Contraseña del usuario al que nos conectamos
+    password: process.env.DB_PASSWORD || "", // Contraseña del usuario al que nos conectamos
     database: process.env.DB_NAME || "thor_db", // Nombre de la base de datos que nos conectamos
     waitForConnections: true,
     connectionLimit: 10, // Define el máximo de conexiones simultáneas
@@ -91,6 +90,28 @@ app.get('/api/users', (req, res) => {
 });
 
 
+// --- LEER (GET): Obtener todos los socios ---
+app.get('/socios', (req, res) => {
+    // Usamos pool_mysql y los nombres de tu tabla 'usuario'
+    pool_mysql.query('SELECT CodUsu, UsuNom, UsuEma, UsuTel FROM usuario WHERE UsuRol = "Socio"', (err, results) => {
+        if (err) return res.status(500).json({ error: err.message });
+        res.json(results);
+    });
+});
+
+// --- ACTUALIZAR (PUT): Modificar nombre de un socio ---
+app.put('/socios/:id', (req, res) => {
+    const { id } = req.params;
+    const { nombre } = req.body; // Recibimos el nuevo nombre
+    
+    // Tu tabla usa 'CodUsu' como ID y 'UsuNom' para el nombre
+    const query = 'UPDATE usuario SET UsuNom = ? WHERE CodUsu = ?';
+
+    pool_mysql.query(query, [nombre, id], (err, result) => {
+        if (err) return res.status(500).json({ error: err.message });
+        res.json({ message: 'Socio actualizado correctamente' });
+    });
+});
 // Middleware de manejo de errores global
 app.use((err, req, res, next) => {
     console.error('Error no capturado:', err);
