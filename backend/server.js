@@ -42,8 +42,7 @@ pool_mysql.getConnection((error, connection) => {
     // Iniciamos el servidor en el puerto especificado
     app.listen(PORT, () => {
         // Confirmación en la consola de que se ha lanzado el servidor OK
-        console.log(`Conectado a MySQL. Servidor corriendo en
-http://localhost:${PORT}`);
+        console.log(`Conectado a MySQL. Servidor corriendo en http://localhost:${PORT}`);
     });
 });
 
@@ -79,6 +78,18 @@ app.get('/api/centros', (req, res) => {
         res.json(results);
     });
 });
+// ENDPOINT GET: Recuperar usuarios
+app.get('/api/users', (req, res) => {
+    const query = 'SELECT * FROM users';
+    pool_mysql.query(query, (err, results) => {
+        if (err) {
+            console.error('Error en la consulta:', err.message);
+            return res.status(500).json({ error: err.message });
+        }
+        res.json(results);
+    });
+});
+
 
 // Middleware de manejo de errores global
 app.use((err, req, res, next) => {

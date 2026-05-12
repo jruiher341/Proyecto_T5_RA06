@@ -18,7 +18,6 @@
 body {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
     background-color: var(--background-dark);
     font-family: var(--text-font);
     color: var(--blanco);
@@ -40,7 +39,6 @@ main {
     z-index: 1000;
     background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent);
     backdrop-filter: blur(10px);
-    border-bottom: 1px solid rgba(255,255,255,0.05);
 }
 
 .contenedor-nav {
@@ -99,11 +97,10 @@ main {
     width: 100%;
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 3rem;
-    padding: 0 10%;
     position: relative;
     background: url('https://images.unsplash.com/photo-1540497077202-7c8a3999166f?auto=format&fit=crop&q=80') center/cover no-repeat;
-    border-bottom: 3px solid gray;
 }
 
 /* Overley gradiente */
@@ -251,24 +248,32 @@ footer {
             GIMNASIOS 
 =================================*/
 .seccion-datos {
+    margin: 10rem 0;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 1rem;
+    gap: 5rem;
 }
 
 .centro-card {
-    display: flex;
-    flex-direction: row;
-    gap: 5rem;
-    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
     align-items: center;
     justify-content: center;
+    width: 100%;
     border: 3px solid #ccc;
-    border-radius: 8px;
+    border-radius: 12px;
     padding: 1rem;
     background: linear-gradient(90deg, rgba(225, 97, 13, 0.9) 20%, rgba(10,10,10,0.2) 35%);
+}
+
+.centro-card div {
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    justify-content: center;
 }
 
 /* Imagen GYM */
@@ -291,7 +296,7 @@ footer {
 
 /* Mapa GYM */
 .centro-card .ubicacion iframe{
-    color: var(--blanco);
+    border-radius: 12px;
 }
 
 /*===============================

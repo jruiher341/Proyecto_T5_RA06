@@ -8,26 +8,35 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!response.ok) throw new Error('Error ' + response.status);
             return response.json();
         })
-        .then(data => {
-            if (!data || data.length === 0) {
+        .then(centros => {
+            if (!centros || centros.length === 0) {
                 contenedor.innerHTML = '<p>No hay centros disponibles</p>';
                 return;
             }
-            data.forEach(centro => {
+            centros.forEach(centro => {
+
+                const direccionURL = encodeURIComponent(centro.CenDir);
+
                 const card = document.createElement('div');
-                card.className = 'centro-card';
+                card.className = 'centro-card';          
                 card.innerHTML = `
                     <div class="img-gym">
                         <img src="./assets/images/ThorFitness_logo.png" alt="image/png">
                     </div>
-                    <div>
+                    <div class="descripcion">
                         <h3>${centro.CenNom}</h3>
                         <p>📍 ${centro.CenDir}</p>
                         <p>📞 <a href="tel:${centro.CenTel}">${centro.CenTel}</a></p>
                         <p>✉ <a href="mailto:${centro.CenEma}">${centro.CenEma}</a></p>
                     </div>
                     <div class="ubicacion">
-                        <iframe src="${centro.CenDir}" frameborder="0"></iframe>
+                        <iframe
+                            src="https://www.google.com/maps?q=${direccionURL}&output=embed"
+                            width="100%"
+                            height="250"
+                            style="border:0;"
+                            loading="lazy">
+                        </iframe>
                     </div>
                 `;
                 contenedor.appendChild(card);
