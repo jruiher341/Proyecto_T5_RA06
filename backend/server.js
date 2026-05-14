@@ -13,14 +13,6 @@ app.use(express.json());
 // Servir archivos estáticos del frontend
 app.use(express.static(path.join(__dirname, '../src')));
 
-// CONFIGURACIÓN DE CONEXIÓN [cite: 48, 117]
-// const connection = mysql.createConnection({
-//     host: process.env.DB_HOST || 'localhost',
-//     user: process.env.DB_USER || 'root',
-//     password: process.env.DB_PASSWORD || 'thor',
-//     database: process.env.DB_NAME || 'thor_db'
-// });
-
 const pool_mysql = mysql.createPool({
     host: process.env.DB_HOST || "localhost", // Dirección del servidor
     port: 3306, // Puerto al que nos conectamos en MySQL
@@ -44,26 +36,6 @@ pool_mysql.getConnection((error, connection) => {
         console.log(`Conectado a MySQL. Servidor corriendo en http://localhost:${PORT}`);
     });
 });
-
-
-
-// Conectar a la base de datos
-// connection.connect((err) => {
-//     if (err) {
-//         console.error('Error conectando a la base de datos:', err.message);
-//         setTimeout(() => connection.connect(), 2000);
-//     } else {
-//         console.log('Conectado a la base de datos MySQL');
-//     }
-// });
-
-// Manejar desconexiones inesperadas
-// connection.on('error', (err) => {
-//     console.error('Error de conexión a la BD:', err.message);
-//     if (err.code === 'PROTOCOL_CONNECTION_LOST') {
-//         connection.connect();
-//     }
-// });
 
 // ENDPOINT GET: Listar datos [cite: 279]
 // En server.js
