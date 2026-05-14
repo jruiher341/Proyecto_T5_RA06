@@ -33,9 +33,11 @@ pool_mysql.getConnection((error, connection) => {
     // Iniciamos el servidor en el puerto especificado
     app.listen(PORT, () => {
         // Confirmación en la consola de que se ha lanzado el servidor OK
-        console.log(`Conectado a MySQL. Servidor corriendo en http://localhost:${PORT}`);
+        console.log(`Conectado a MySQL. Servidor corriendo en
+http://localhost:${PORT}`);
     });
 });
+
 
 // ENDPOINT GET: Listar datos [cite: 279]
 // En server.js
@@ -49,18 +51,24 @@ app.get('/api/centros', (req, res) => {
         res.json(results);
     });
 });
-// ENDPOINT GET: Recuperar usuarios
-app.get('/api/users', (req, res) => {
-    const query = 'SELECT * FROM users';
-    pool_mysql.query(query, (err, results) => {
+// backend/server.js (Añade esto a tus rutas existentes)
+// CREAR SOCIO (POST)
+// --- CREAR (POST): Registrar un nuevo socio ---
+app.post('/socios', (req, res) => {
+    // Recogemos nombre, apellido, email y telefono del frontend
+    const { nombre, apellido, email, telefono } = req.body; 
+    
+    // IMPORTANTE: Tu tabla 'usuario' pide UsuNom, UsuApe, UsuEma, UsuTel, UsuRol, UsuDNI, UsuCon
+    const query = 'INSERT INTO usuario (UsuNom, UsuApe, UsuEma, UsuTel, UsuRol, UsuDNI, UsuCon) VALUES (?, ?, ?, ?, "Socio", "Pendiente", "1234")';
+    
+    pool_mysql.query(query, [nombre, apellido, email, telefono], (err, result) => {
         if (err) {
-            console.error('Error en la consulta:', err.message);
+            console.error("Error SQL detallado:", err.message); // Esto saldrá en tu terminal de Docker
             return res.status(500).json({ error: err.message });
         }
-        res.json(results);
+        res.status(201).json({ message: 'Socio registrado con éxito', id: result.insertId });
     });
 });
-
 
 // --- LEER (GET): Obtener todos los socios ---
 app.get('/socios', (req, res) => {
