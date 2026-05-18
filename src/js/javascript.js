@@ -160,10 +160,10 @@ function verMembresias() {
             contenedor.innerHTML = ""; 
             membresia.forEach(m => {
                 contenedor.innerHTML += `
-                    <section class="seccion-membresias" style="border: 1px solid #ffcc00; padding: 15px; margin-top: 10px; color: white; background: #111;">
+                    <section class="card-membresia">
                         <h4>${m.MemNom}</h4>
                         <p>Precio: $${m.MemPre}</p>
-                        <button onclick="contratarMembresia(${m.CodMem})" style="cursor:pointer; background:#ffcc00; color:black; border:none; padding:8px 12px; font-weight:bold;">
+                        <button class="boton" onclick="contratarMembresia(${m.CodMem})">
                             ASIGNAR PLAN
                         </button>
                     </section>
@@ -173,38 +173,4 @@ function verMembresias() {
         .catch(error => {
             console.error("Error al cargar membresías:", error);
         });
-}
-
-function contratarMembresia(idMembresia) {
-    const idSocio = prompt("Introduce el ID del socio (CodUsu) para asignarle esta membresía:"); 
-    if (!idSocio) return;
-
-    const hoy = new Date().toISOString().split('T')[0];
-    const unMesDespues = new Date();
-    unMesDespues.setDate(unMesDespues.getDate() + 30);
-    const fin = unMesDespues.toISOString().split('T')[0];
-
-    const datos = {
-        idSocio: idSocio,
-        idMembresia: idMembresia,
-        fechaInicio: hoy,
-        fechaFin: fin
-    };
-
-    fetch('http://localhost:3000/api/membresia/asignar', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(datos)
-    })
-    .then(res => {
-        if (res.ok) {
-            alert("¡Membresía asignada correctamente al socio!");
-        } else {
-            alert("Error en el servidor al asignar la membresía.");
-        }
-    })
-    .catch(error => {
-        console.error("Error al conectar:", error);
-        alert("No se pudo conectar con el servidor.");
-    });
 }

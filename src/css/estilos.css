@@ -27,6 +27,7 @@ main {
     display: flex;
     flex-direction: column;
     height: 100vh;
+    flex: 1;
     align-items: center;
     gap: 1rem;
 }
@@ -250,6 +251,7 @@ footer {
 =================================*/
 .seccion-datos {
     display: flex;
+    margin: 10rem 0;
     flex-direction: column;
     align-items: center;
     justify-content: center;
@@ -307,10 +309,42 @@ footer {
     margin: 10rem 0;
 }
 
-.seccion-membresias {
+.seccion-membresias{
     display: flex;
-    width: auto;
-    height: 400px;
+    gap: 5rem;
+}
+
+.card-membresia {
+    display: flex;
+    flex-direction: column;
+    gap: 5rem;
+    border-style: solid;
+    border-color: white;
+    border-width: 3px 3px 5px 3px; 
+    font-size: 2rem;
+    border-radius: 12px;
+    padding: 15px; 
+    margin-top: 10px; 
+    box-shadow: 0 2px 5px black;
+    color: white; 
+    background: #111;
+    transition: all 0.2s ease-in;
+}
+
+.card-membresia:hover {
+    transform: scale(1.02);
+    border-width: 1px 3px 5px 3px; 
+    box-shadow: 0 5px 10px black;
+    border-color: var(--primario);
+}
+
+.card-membresia button {
+    cursor:pointer; 
+    background: var(--primario); 
+    color: white;
+    border:none; 
+    padding:8px 12px; 
+    font-weight:bold;
 }
 
 /*===============================
