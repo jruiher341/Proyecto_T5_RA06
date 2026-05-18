@@ -304,7 +304,9 @@ footer {
             MEMBRESIAS
 =================================*/
 
-
+.body-membresia {
+    margin: 10rem 0;
+}
 
 /*===============================
             LOGIN
@@ -325,7 +327,6 @@ footer {
   height: auto;
   margin: 10rem 0;
   color: #f5f6f7;
-  font-family: Tahoma;
   font-size: 16px;
 }
 

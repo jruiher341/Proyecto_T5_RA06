@@ -92,6 +92,38 @@ app.put('/socios/:id', (req, res) => {
         res.json({ message: 'Socio actualizado correctamente' });
     });
 });
+// ==========================================
+// SECCIÓN: MEMBRESÍAS
+// ==========================================
+
+// --- LEER (GET): Obtener todas las membresías ---
+app.get('/api/membresia', (req, res) => {
+    const query = 'SELECT * FROM membresia';
+    pool_mysql.query(query, (err, results) => {
+        if (err) {
+            console.error('Error en la consulta:', err.message);
+            return res.status(500).json({ error: err.message });
+        }
+        res.json(results);
+    });
+});
+
+// --- CREAR (POST): Asignar membresía a un socio ---
+app.post('/api/membresia/asignar', (req, res) => {
+    const { idSocio, idMembresia, fechaInicio, fechaFin } = req.body;
+    
+    // Insertar en la tabla socio (usuario + membresia)
+    const query = 'INSERT INTO socio (usuario_CodUsu, membresia_CodMem) VALUES (?, ?)';
+    
+    pool_mysql.query(query, [idSocio, idMembresia], (err, result) => {
+        if (err) {
+            console.error("Error SQL detallado:", err.message);
+            return res.status(500).json({ error: err.message });
+        }
+        res.status(201).json({ message: 'Membresía asignada correctamente', id: result.insertId });
+    });
+});
+
 // Middleware de manejo de errores global
 app.use((err, req, res, next) => {
     console.error('Error no capturado:', err);

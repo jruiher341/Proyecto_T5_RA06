@@ -46,13 +46,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 contenedor.innerHTML = '<p style="color:var(--primario)">Error al cargar los datos</p>';
             });
     }
-
-    // Cargar listas iniciales si los elementos existen en el HTML
+    
+    // Cargar lista inicial si los elementos existen en el HTML
     if (document.getElementById('lista-membresias')) {
         verMembresias();
     }
-    if (document.getElementById('lista-socios')) {
-        verSocios();
+    
+    // Cargar lista si se clickea en el botón
+    const listaSocios = document.getElementById('lista-socios');
+    
+    if (listaSocios) {
+        listaSocios.addEventListener('click', () => {
+            verSocios();
+        });
     }
 });
 
@@ -142,25 +148,25 @@ function actualizarSocio(id, nombreActual) {
 // ==========================================
 
 function verMembresias() {
-    const contenedor = document.getElementById('lista-membresias');
+    const contenedor = document.querySelector(".seccion-membresias");
     if (!contenedor) return;
 
-    fetch('http://localhost:3000/api/membresias')
+    fetch('http://localhost:3000/api/membresia')
         .then(respuesta => {
             if (!respuesta.ok) throw new Error('Error al obtener membresías');
             return respuesta.json();
         })
-        .then(membresias => {
+        .then(membresia => {
             contenedor.innerHTML = ""; 
-            membresias.forEach(m => {
+            membresia.forEach(m => {
                 contenedor.innerHTML += `
-                    <div class="membresia-card" style="border: 1px solid #ffcc00; padding: 15px; margin-top: 10px; color: white; background: #111;">
+                    <section class="seccion-membresias" style="border: 1px solid #ffcc00; padding: 15px; margin-top: 10px; color: white; background: #111;">
                         <h4>${m.MemNom}</h4>
                         <p>Precio: $${m.MemPre}</p>
-                        <button onclick="contratarMembresia(${m.MemId})" style="cursor:pointer; background:#ffcc00; color:black; border:none; padding:8px 12px; font-weight:bold;">
+                        <button onclick="contratarMembresia(${m.CodMem})" style="cursor:pointer; background:#ffcc00; color:black; border:none; padding:8px 12px; font-weight:bold;">
                             ASIGNAR PLAN
                         </button>
-                    </div>
+                    </section>
                 `;
             });
         })
@@ -185,7 +191,7 @@ function contratarMembresia(idMembresia) {
         fechaFin: fin
     };
 
-    fetch('http://localhost:3000/api/membresias/asignar', {
+    fetch('http://localhost:3000/api/membresia/asignar', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(datos)
