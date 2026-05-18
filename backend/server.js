@@ -123,6 +123,21 @@ app.post('/api/membresia/asignar', (req, res) => {
         res.status(201).json({ message: 'Membresía asignada correctamente', id: result.insertId });
     });
 });
+// --- ELIMINAR (DELETE): Borrar un socio ---
+app.delete('/socios/:id', (req, res) => {
+    const { id } = req.params; // Capturamos el ID de la URL
+    
+    // Consulta SQL estándar para borrar por clave primaria (CodUsu)
+    const query = 'DELETE FROM usuario WHERE CodUsu = ?';
+
+    pool_mysql.query(query, [id], (err, result) => {
+        if (err) {
+            console.error("Error al eliminar socio:", err.message);
+            return res.status(500).json({ error: err.message });
+        }
+        res.json({ message: 'Socio eliminado correctamente' });
+    });
+});
 
 // Middleware de manejo de errores global
 app.use((err, req, res, next) => {

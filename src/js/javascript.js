@@ -105,13 +105,21 @@ function verSocios() {
             return respuesta.json();
         })
         .then(socios => {
-            contenedor.innerHTML = ""; 
+            contenedor.innerHTML = ""; // Limpiamos la lista antes de volver a pintar
+            
             socios.forEach(s => {
+                // Modificamos el bloque HTML añadiendo "position: relative" a la caja contenedora
+                // y sumamos el botón de borrar con estilos idénticos en la esquina inferior derecha
                 contenedor.innerHTML += `
-                    <div style="border: 1px solid #ffcc00; padding: 10px; margin-top: 10px; color: white; background: #222;">
+                    <div style="border: 1px solid #ffcc00; padding: 10px; margin-top: 10px; color: white; background: #222; position: relative;">
                         <p><strong>ID: ${s.CodUsu}</strong> - ${s.UsuNom} (${s.UsuEma})</p>
-                        <button onclick="actualizarSocio(${s.CodUsu}, '${s.UsuNom}')" style="cursor:pointer; background:#ffcc00; color:black; border:none; padding:5px;">
+                        
+                        <button onclick="actualizarSocio(${s.CodUsu}, '${s.UsuNom}')" style="cursor:pointer; background:#ffcc00; color:black; border:none; padding:5px; font-weight: bold;">
                             ACTUALIZAR NOMBRE
+                        </button>
+
+                        <button onclick="eliminarSocio(${s.CodUsu})" style="position: absolute; bottom: 10px; right: 10px; cursor: pointer; background: #FF3333; color: white; border: none; padding: 5px 10px; font-weight: bold;">
+                            BORRAR
                         </button>
                     </div>
                 `;
@@ -207,4 +215,82 @@ function contratarMembresia(idMembresia) {
         console.error("Error al conectar:", error);
         alert("No se pudo conectar con el servidor.");
     });
+}
+// Supongamos que esta es tu función que pinta los socios en el HTML
+function mostrarSocios(socios) {
+    const contenedorPrincipal = document.getElementById('contenedor-usuarios'); // El id de tu HTML
+    contenedorPrincipal.innerHTML = ''; // Limpiamos antes de pintar
+
+    socios.forEach(socio => {
+        // Creamos la tarjeta del socio
+        const tarjetaSocio = document.createElement('div');
+        
+        // ESTILOS: Mismo borde amarillo, fondo oscuro y añadimos position relative 
+        // para que el botón de borrar se posicione bien abajo a la derecha
+        tarjetaSocio.style.border = '1px solid #FFD700'; 
+        tarjetaSocio.style.padding = '20px';
+        tarjetaSocio.style.marginBottom = '15px';
+        tarjetaSocio.style.backgroundColor = '#1a1a1a';
+        tarjetaSocio.style.position = 'relative'; // ¡Muy importante!
+
+        // Contenido de texto y botón de actualizar actual
+        tarjetaSocio.innerHTML = `
+            <p style="color: white; font-weight: bold; text-align: center;">
+                ID: ${socio.CodUsu} - ${socio.UsuNom} (${socio.UsuEma})
+            </p>
+            <button onclick="actualizarSocio(${socio.CodUsu})" style="background-color: #FFD700; color: black; font-weight: bold; border: none; padding: 5px 10px; cursor: pointer;">
+                ACTUALIZAR NOMBRE
+            </button>
+        `;
+
+        // Creamos el botón de borrar de forma manual para asignarle el evento fácilmente
+        const botonBorrar = document.createElement('button');
+        botonBorrar.innerText = 'BORRAR';
+        
+        // ESTILOS: Color rojo, y posicionado de forma absoluta abajo a la derecha
+        botonBorrar.style.position = 'absolute';
+        botonBorrar.style.bottom = '10px';
+        botonBorrar.style.right = '10px';
+        botonBorrar.style.backgroundColor = '#FF3333';
+        botonBorrar.style.color = 'white';
+        botonBorrar.style.border = 'none';
+        botonBorrar.style.padding = '5px 10px';
+        botonBorrar.style.fontWeight = 'bold';
+        botonBorrar.style.cursor = 'pointer';
+
+        // Asignamos el evento de click que llamará a la función de la Base de Datos
+        botonBorrar.onclick = function() {
+            eliminarSocio(socio.CodUsu);
+        };
+
+        // Metemos el botón dentro de la tarjeta del socio
+        tarjetaSocio.appendChild(botonBorrar);
+        
+        // Metemos la tarjeta en el contenedor de la página
+        contenedorPrincipal.appendChild(tarjetaSocio);
+    });
+}
+
+// FUNCIÓN FETCH PARA CONECTAR CON EL BACKEND Y BORRAR
+function eliminarSocio(id) {
+    // Alerta de confirmación típica de navegador, muy usada en 1º de DAW
+    const confirmar = confirm(`¿Estás seguro de que deseas eliminar al socio con ID ${id}?`);
+    
+    if (confirmar) {
+        fetch(`http://localhost:3000/socios/${id}`, {
+            method: 'DELETE' // Indicamos el método DELETE que creamos en el backend
+        })
+        .then(response => response.json())
+        .then(data => {
+            alert(data.message); // Muestra "Socio eliminado correctamente"
+            verSocios(); // Vuelve a cargar la lista de socios para actualizar la pantalla
+            // Aquí vuelves a llamar a la función que recarga/pinta la lista 
+            // de usuarios para que desaparezca visualmente de la pantalla. Ejemplo:
+            // obtenerSocios(); 
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('No se pudo eliminar al socio');
+        });
+    }
 }
