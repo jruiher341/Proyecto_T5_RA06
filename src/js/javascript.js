@@ -162,7 +162,10 @@ function verMembresias() {
                 contenedor.innerHTML += `
                     <section class="card-membresia">
                         <h4>${m.MemNom}</h4>
-                        <p>Precio: $${m.MemPre}</p>
+                        <div>
+                            <p>${m.MemPre}€</p>
+                            <p>Periodo de ${m.MemDur} días</p>
+                        </div>
                         <button class="boton" onclick="contratarMembresia(${m.CodMem})">
                             ASIGNAR PLAN
                         </button>
