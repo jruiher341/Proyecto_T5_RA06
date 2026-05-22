@@ -4,8 +4,8 @@ const mysql = require('mysql2');
 const cors = require('cors');
 const path = require('path');
 
-const PORT = process.env.PORT || 3000;           // Puerto donde correrá nuestro servidor Express
-const ENDPOINT_SERVER = "http://localhost"; // URL base de nuestro servidor
+const PUERTO = process.env.PORT || 3000;           // Puerto del servidor
+const URL_BASE = "http://localhost"; // URL base de nuestro servidor
 
 const app = express();
 app.use(cors());
@@ -13,69 +13,68 @@ app.use(express.json());
 // Servir archivos estáticos del frontend
 app.use(express.static(path.join(__dirname, '../src')));
 
-const pool_mysql = mysql.createPool({
-    host: process.env.DB_HOST || "localhost", // Dirección del servidor
-    port: 3306, // Puerto al que nos conectamos en MySQL
-    user: process.env.DB_USER || "root", // Usuario al que nos conectamos
-    password: process.env.DB_PASSWORD || "", // Contraseña del usuario al que nos conectamos
-    database: process.env.DB_NAME || "thor_db", // Nombre de la base de datos que nos conectamos
+const conexion = mysql.createPool({
+    host: process.env.DB_HOST || "localhost", // Dirección
+    port: 3306, // Puerto
+    user: process.env.DB_USER || "root", // Usuario
+    password: process.env.DB_PASSWORD || "", // Contraseña
+    database: process.env.DB_NAME || "thor_db", // Nombre de la base de datos
     waitForConnections: true,
-    connectionLimit: 10, // Define el máximo de conexiones simultáneas
+    connectionLimit: 10, // Maximo de las conexiones que pueden haber
     queueLimit: 0
 });
 
-pool_mysql.getConnection((error, connection) => {
+conexion.getConnection((error, conn) => {
     if (error) {
         console.error("Error conectando a MySQL:", error);
-        process.exit(1); // Si falla la BD, cerramos el servidor
+        process.exit(1); // Si falla la BD, se cierra el servidor
     }
-    connection.release();
+    conn.release();
     // Iniciamos el servidor en el puerto especificado
-    app.listen(PORT, () => {
-        // Confirmación en la consola de que se ha lanzado el servidor OK
-        console.log(`Conectado a MySQL. Servidor corriendo en
-http://localhost:${PORT}`);
+    app.listen(PUERTO, () => {
+
+        console.log(`Conectado a MySQL. Servidor corriendo en http://localhost:${PUERTO}`);
     });
 });
 
 
-// ENDPOINT GET: Listar datos [cite: 279]
-// En server.js
+// ENDPOINT GET: Listar datos
 app.get('/api/centros', (req, res) => {
-    const query = 'SELECT * FROM centro';
-    pool_mysql.query(query, (err, results) => {
-        if (err) {
-            console.error('Error en la consulta:', err.message);
-            return res.status(500).json({ error: err.message });
+    const consulta = 'SELECT * FROM centro';
+    conexion.query(consulta, (error, resultados) => {
+        if (error) {
+            console.error('Error en la consulta:', error.message);
+            return res.status(500).json({ error: error.message });
         }
-        res.json(results);
+        res.json(resultados);
     });
 });
-// backend/server.js (Añade esto a tus rutas existentes)
+
+// CRUD
+
 // CREAR SOCIO (POST)
 // --- CREAR (POST): Registrar un nuevo socio ---
 app.post('/socios', (req, res) => {
     // Recogemos nombre, apellido, email y telefono del frontend
     const { nombre, apellido, email, telefono } = req.body; 
     
-    // IMPORTANTE: Tu tabla 'usuario' pide UsuNom, UsuApe, UsuEma, UsuTel, UsuRol, UsuDNI, UsuCon
-    const query = 'INSERT INTO usuario (UsuNom, UsuApe, UsuEma, UsuTel, UsuRol, UsuDNI, UsuCon) VALUES (?, ?, ?, ?, "Socio", "Pendiente", "1234")';
+    const consulta = 'INSERT INTO usuario (UsuNom, UsuApe, UsuEma, UsuTel, UsuRol, UsuDNI, UsuCon) VALUES (?, ?, ?, ?, "Socio", "Pendiente", "1234")';
     
-    pool_mysql.query(query, [nombre, apellido, email, telefono], (err, result) => {
-        if (err) {
-            console.error("Error SQL detallado:", err.message); // Esto saldrá en tu terminal de Docker
-            return res.status(500).json({ error: err.message });
+    conexion.query(consulta, [nombre, apellido, email, telefono], (error, resultado) => {
+        if (error) {
+            console.error("Error SQL detallado:", error.message);
+            return res.status(500).json({ error: error.message });
         }
-        res.status(201).json({ message: 'Socio registrado con éxito', id: result.insertId });
+        res.status(201).json({ message: 'Socio registrado con éxito', id: resultado.insertId });
     });
 });
 
 // --- LEER (GET): Obtener todos los socios ---
 app.get('/socios', (req, res) => {
-    // Usamos pool_mysql y los nombres de tu tabla 'usuario'
-    pool_mysql.query('SELECT CodUsu, UsuNom, UsuEma, UsuTel FROM usuario WHERE UsuRol = "Socio"', (err, results) => {
-        if (err) return res.status(500).json({ error: err.message });
-        res.json(results);
+
+    conexion.query('SELECT CodUsu, UsuNom, UsuEma, UsuTel FROM usuario WHERE UsuRol = "Socio"', (error, resultados) => {
+        if (error) return res.status(500).json({ error: error.message });
+        res.json(resultados);
     });
 });
 
@@ -84,27 +83,28 @@ app.put('/socios/:id', (req, res) => {
     const { id } = req.params;
     const { nombre } = req.body; // Recibimos el nuevo nombre
     
-    // Tu tabla usa 'CodUsu' como ID y 'UsuNom' para el nombre
-    const query = 'UPDATE usuario SET UsuNom = ? WHERE CodUsu = ?';
+    const consulta = 'UPDATE usuario SET UsuNom = ? WHERE CodUsu = ?';
 
-    pool_mysql.query(query, [nombre, id], (err, result) => {
-        if (err) return res.status(500).json({ error: err.message });
+    conexion.query(consulta, [nombre, id], (error, resultado) => {
+        if (error) return res.status(500).json({ error: error.message });
         res.json({ message: 'Socio actualizado correctamente' });
     });
 });
+
+
 // ==========================================
 // SECCIÓN: MEMBRESÍAS
 // ==========================================
 
 // --- LEER (GET): Obtener todas las membresías ---
 app.get('/api/membresia', (req, res) => {
-    const query = 'SELECT * FROM membresia';
-    pool_mysql.query(query, (err, results) => {
-        if (err) {
-            console.error('Error en la consulta:', err.message);
-            return res.status(500).json({ error: err.message });
+    const consulta = 'SELECT * FROM membresia';
+    conexion.query(consulta, (error, resultados) => {
+        if (error) {
+            console.error('Error en la consulta:', error.message);
+            return res.status(500).json({ error: error.message });
         }
-        res.json(results);
+        res.json(resultados);
     });
 });
 
@@ -113,33 +113,34 @@ app.post('/api/membresia/asignar', (req, res) => {
     const { idSocio, idMembresia, fechaInicio, fechaFin } = req.body;
     
     // Insertar en la tabla socio (usuario + membresia)
-    const query = 'INSERT INTO socio (usuario_CodUsu, membresia_CodMem) VALUES (?, ?)';
+    const consulta = 'INSERT INTO socio (usuario_CodUsu, membresia_CodMem) VALUES (?, ?)';
     
-    pool_mysql.query(query, [idSocio, idMembresia], (err, result) => {
-        if (err) {
-            console.error("Error SQL detallado:", err.message);
-            return res.status(500).json({ error: err.message });
+    conexion.query(consulta, [idSocio, idMembresia], (error, resultado) => {
+        if (error) {
+            console.error("Error SQL detallado:", error.message);
+            return res.status(500).json({ error: error.message });
         }
-        res.status(201).json({ message: 'Membresía asignada correctamente', id: result.insertId });
+        res.status(201).json({ message: 'Membresía asignada correctamente', id: resultado.insertId });
     });
 });
+
 // --- ELIMINAR (DELETE): Borrar un socio ---
 app.delete('/socios/:id', (req, res) => {
     const { id } = req.params; // Capturamos el ID de la URL
     
-    // Consulta SQL estándar para borrar por clave primaria (CodUsu)
-    const query = 'DELETE FROM usuario WHERE CodUsu = ?';
+    // Borrar por clave primaria (CodUsu)
+    const consulta = 'DELETE FROM usuario WHERE CodUsu = ?';
 
-    pool_mysql.query(query, [id], (err, result) => {
-        if (err) {
-            console.error("Error al eliminar socio:", err.message);
-            return res.status(500).json({ error: err.message });
+    conexion.query(consulta, [id], (error, resultado) => {
+        if (error) {
+            console.error("Error al eliminar socio:", error.message);
+            return res.status(500).json({ error: error.message });
         }
         res.json({ message: 'Socio eliminado correctamente' });
     });
 });
 
-// Middleware de manejo de errores global
+// Error global
 app.use((err, req, res, next) => {
     console.error('Error no capturado:', err);
     res.status(500).json({ error: 'Error interno del servidor' });

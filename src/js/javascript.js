@@ -1,10 +1,10 @@
 document.addEventListener('DOMContentLoaded', () => {
     const contenedor = document.getElementById('datos-gym');
-    const API_URL = 'http://localhost:3000';
+    const url = 'http://localhost:3000';
 
-    // 1. CARGAR CENTROS
+    // CARGAR CENTROS
     if (contenedor) {
-        fetch(`${API_URL}/api/centros`)
+        fetch(`${url}/api/centros`)
             .then(response => {
                 if (!response.ok) throw new Error('Error ' + response.status);
                 return response.json();
@@ -15,10 +15,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     return;
                 }
                 centros.forEach(centro => {
-                    const direccionURL = encodeURIComponent(centro.CenDir);
-                    const card = document.createElement('div');
-                    card.className = 'centro-card';          
-                    card.innerHTML = `
+                    const dir = encodeURIComponent(centro.CenDir);
+                    const tarjeta = document.createElement('div');
+                    tarjeta.className = 'centro-card';          
+                    tarjeta.innerHTML = `
                         <div class="img-gym">
                             <img src="../assets/images/ThorFitness_logo.png" alt="image/png">
                         </div>
@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         </div>
                         <div class="ubicacion">
                             <iframe
-                                src="https://www.google.com/maps?q=${direccionURL}&output=embed"
+                                src="https://www.google.com/maps?q=${dir}&output=embed"
                                 width="100%"
                                 height="250"
                                 style="border:0;"
@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             </iframe>
                         </div>
                     `;
-                    contenedor.appendChild(card);
+                    contenedor.appendChild(tarjeta);
                 });
             })
             .catch(error => {
@@ -105,20 +105,19 @@ function verSocios() {
             return respuesta.json();
         })
         .then(socios => {
-            contenedor.innerHTML = ""; // Limpiamos la lista antes de volver a pintar
+            contenedor.innerHTML = ""; // Limpiamos la lista antes de volver imprimirlo
             
-            socios.forEach(s => {
-                // Modificamos el bloque HTML añadiendo "position: relative" a la caja contenedora
-                // y sumamos el botón de borrar con estilos idénticos en la esquina inferior derecha
+            socios.forEach(socio => {
+
                 contenedor.innerHTML += `
                     <div style="border: 1px solid #ffcc00; padding: 10px; margin-top: 10px; color: white; background: #222; position: relative;">
-                        <p><strong>ID: ${s.CodUsu}</strong> - ${s.UsuNom} (${s.UsuEma})</p>
+                        <p><strong>ID: ${socio.CodUsu}</strong> - ${socio.UsuNom} (${socio.UsuEma})</p>
                         
-                        <button onclick="actualizarSocio(${s.CodUsu}, '${s.UsuNom}')" style="cursor:pointer; background:#ffcc00; color:black; border:none; padding:5px; font-weight: bold;">
+                        <button onclick="actualizarSocio(${socio.CodUsu}, '${socio.UsuNom}')" style="cursor:pointer; background:#ffcc00; color:black; border:none; padding:5px; font-weight: bold;">
                             ACTUALIZAR NOMBRE
                         </button>
 
-                        <button onclick="eliminarSocio(${s.CodUsu})" style="position: absolute; bottom: 10px; right: 10px; cursor: pointer; background: #FF3333; color: white; border: none; padding: 5px 10px; font-weight: bold;">
+                        <button onclick="eliminarSocio(${socio.CodUsu})" style="position: absolute; bottom: 10px; right: 10px; cursor: pointer; background: #FF3333; color: white; border: none; padding: 5px 10px; font-weight: bold;">
                             BORRAR
                         </button>
                     </div>
@@ -130,14 +129,14 @@ function verSocios() {
         });
 }
 
-function actualizarSocio(id, nombreActual) {
-    const nuevoNombre = prompt("Nuevo nombre para el socio:", nombreActual);
+function actualizarSocio(id, nombre) {
+    const nuevo = prompt("Nuevo nombre para el socio:", nombre);
     
-    if (nuevoNombre && nuevoNombre !== nombreActual) {
+    if (nuevo && nuevo !== nombre) {
         fetch(`http://localhost:3000/socios/${id}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ nombre: nuevoNombre })
+            body: JSON.stringify({ nombre: nuevo })
         })
         .then(res => {
             if (res.ok) {
@@ -164,9 +163,9 @@ function verMembresias() {
             if (!respuesta.ok) throw new Error('Error al obtener membresías');
             return respuesta.json();
         })
-        .then(membresia => {
+        .then(membresias => {
             contenedor.innerHTML = ""; 
-            membresia.forEach(m => {
+            membresias.forEach(m => {
                 contenedor.innerHTML += `
                     <section class="card-membresia">
                         <h4>${m.MemNom}</h4>
@@ -190,16 +189,16 @@ function contratarMembresia(idMembresia) {
     const idSocio = prompt("Introduce el ID del socio (CodUsu) para asignarle esta membresía:"); 
     if (!idSocio) return;
 
-    const hoy = new Date().toISOString().split('T')[0];
-    const unMesDespues = new Date();
-    unMesDespues.setDate(unMesDespues.getDate() + 30);
-    const fin = unMesDespues.toISOString().split('T')[0];
+    const inicio = new Date().toISOString().split('T')[0];
+    const fin = new Date();
+    fin.setDate(fin.getDate() + 30);
+    const vencimiento = fin.toISOString().split('T')[0];
 
     const datos = {
         idSocio: idSocio,
         idMembresia: idMembresia,
-        fechaInicio: hoy,
-        fechaFin: fin
+        fechaInicio: inicio,
+        fechaFin: vencimiento
     };
 
     fetch('http://localhost:3000/api/membresia/asignar', {
@@ -221,56 +220,29 @@ function contratarMembresia(idMembresia) {
 }
 // Supongamos que esta es tu función que pinta los socios en el HTML
 function mostrarSocios(socios) {
-    const contenedorPrincipal = document.getElementById('contenedor-usuarios'); // El id de tu HTML
-    contenedorPrincipal.innerHTML = ''; // Limpiamos antes de pintar
+    const contenedor = document.getElementById('contenedor-usuarios'); // El id de tu HTML
+    contenedor.innerHTML = ''; // Limpiamos antes de pintar
 
     socios.forEach(socio => {
         // Creamos la tarjeta del socio
-        const tarjetaSocio = document.createElement('div');
-        
-        // ESTILOS: Mismo borde amarillo, fondo oscuro y añadimos position relative 
-        // para que el botón de borrar se posicione bien abajo a la derecha
-        tarjetaSocio.style.border = '1px solid #FFD700'; 
-        tarjetaSocio.style.padding = '20px';
-        tarjetaSocio.style.marginBottom = '15px';
-        tarjetaSocio.style.backgroundColor = '#1a1a1a';
-        tarjetaSocio.style.position = 'relative'; // ¡Muy importante!
+        const tarjeta = document.createElement('div');
+        tarjeta.className = 'tarjeta-socio';
 
-        // Contenido de texto y botón de actualizar actual
-        tarjetaSocio.innerHTML = `
-            <p style="color: white; font-weight: bold; text-align: center;">
+        // Contenido de texto y botones en HTML
+        tarjeta.innerHTML = `
+            <p class="info-socio">
                 ID: ${socio.CodUsu} - ${socio.UsuNom} (${socio.UsuEma})
             </p>
-            <button onclick="actualizarSocio(${socio.CodUsu})" style="background-color: #FFD700; color: black; font-weight: bold; border: none; padding: 5px 10px; cursor: pointer;">
+            <button class="boton-actualizar" onclick="actualizarSocio(${socio.CodUsu})">
                 ACTUALIZAR NOMBRE
             </button>
+            <button class="boton-borrar" onclick="eliminarSocio(${socio.CodUsu})">
+                BORRAR
+            </button>
         `;
-
-        // Creamos el botón de borrar de forma manual para asignarle el evento fácilmente
-        const botonBorrar = document.createElement('button');
-        botonBorrar.innerText = 'BORRAR';
-        
-        // ESTILOS: Color rojo, y posicionado de forma absoluta abajo a la derecha
-        botonBorrar.style.position = 'absolute';
-        botonBorrar.style.bottom = '10px';
-        botonBorrar.style.right = '10px';
-        botonBorrar.style.backgroundColor = '#FF3333';
-        botonBorrar.style.color = 'white';
-        botonBorrar.style.border = 'none';
-        botonBorrar.style.padding = '5px 10px';
-        botonBorrar.style.fontWeight = 'bold';
-        botonBorrar.style.cursor = 'pointer';
-
-        // Asignamos el evento de click que llamará a la función de la Base de Datos
-        botonBorrar.onclick = function() {
-            eliminarSocio(socio.CodUsu);
-        };
-
-        // Metemos el botón dentro de la tarjeta del socio
-        tarjetaSocio.appendChild(botonBorrar);
         
         // Metemos la tarjeta en el contenedor de la página
-        contenedorPrincipal.appendChild(tarjetaSocio);
+        contenedor.appendChild(tarjeta);
     });
 }
 
@@ -286,10 +258,7 @@ function eliminarSocio(id) {
         .then(response => response.json())
         .then(data => {
             alert(data.message); // Muestra "Socio eliminado correctamente"
-            verSocios(); // Vuelve a cargar la lista de socios para actualizar la pantalla
-            // Aquí vuelves a llamar a la función que recarga/pinta la lista 
-            // de usuarios para que desaparezca visualmente de la pantalla. Ejemplo:
-            // obtenerSocios(); 
+            verSocios(); 
         })
         .catch(error => {
             console.error('Error:', error);

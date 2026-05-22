@@ -7,19 +7,19 @@
 
 :root {
     --primario: #FF5722;
-    --primario-oscuro: #E64A19;
-    --background-dark: #303030;
-    --background-box: #1d1d1d;
+    --oscuro: #E64A19;
+    --fondo: #303030;
+    --caja: #1d1d1d;
     --blanco: #FFFFFF;
-    --subtitulo: #A0A0A0;
-    --text-font: 'Inter', sans-serif;
+    --gris: #A0A0A0;
+    --fuente: 'Inter', sans-serif;
 }
 
 body {
     display: flex;
     flex-direction: column;
-    background-color: var(--background-dark);
-    font-family: var(--text-font);
+    background-color: var(--fondo);
+    font-family: var(--fuente);
     color: var(--blanco);
 }
 
@@ -90,7 +90,7 @@ main {
 
 .login:hover {
     color: var(--primario);
-    background-color: var(--background-dark);
+    background-color: var(--fondo);
 }
 
 /* --- Principal --- */
@@ -141,7 +141,7 @@ main {
 
 .hero p {
     font-size: 1.1rem;
-    color: var(--subtitulo);
+    color: var(--gris);
     margin-bottom: 2.5rem;
     max-width: 500px;
     line-height: 1.6;
@@ -169,7 +169,7 @@ main {
 }
 
 .boton-primario:hover {
-    background: var(--primario-oscuro);
+    background: var(--oscuro);
     transform: translateY(-3px);
 }
 
@@ -207,7 +207,7 @@ main {
 .descripcion {
     font-size: 0.8rem;
     text-transform: uppercase;
-    color: var(--subtitulo);
+    color: var(--gris);
     letter-spacing: 1px;
 }
 
@@ -223,7 +223,7 @@ footer {
     justify-content: center;
     color: white;
     border-top: 1px solid var(--primario);
-    background-color: var(--background-box);
+    background-color: var(--caja);
     padding: 10px;
 }
 
@@ -266,7 +266,7 @@ footer {
     border-radius: 10px;
     padding: 2rem;
     width: 100%;
-    background: var(--background-box);
+    background: var(--caja);
     transition: all 0.3s ease;
 }
 
@@ -305,7 +305,7 @@ footer {
 .centro-card p {
     margin: 0;
     font-size: 0.95rem;
-    color: var(--subtitulo);
+    color: var(--gris);
 }
 
 .centro-card p a {
@@ -352,7 +352,7 @@ footer {
 }
 
 .body-membresia sub {
-    color: var(--subtitulo);
+    color: var(--gris);
     font-size: 0.95rem;
     margin-top: 1rem;
 }
@@ -373,7 +373,7 @@ footer {
     border: 2px solid var(--primario);
     border-radius: 10px;
     padding: 2rem;
-    background: var(--background-box);
+    background: var(--caja);
     color: white;
     transition: all 0.3s ease;
     min-width: 280px;
@@ -409,7 +409,7 @@ footer {
 
 .card-membresia p {
     font-size: 1.05rem;
-    color: var(--subtitulo);
+    color: var(--gris);
     margin: 0;
     display: flex;
     align-items: center;
@@ -439,7 +439,7 @@ footer {
 .card-membresia button:hover {
     transform: translateY(-3px);
     box-shadow: 0 12px 28px rgba(255, 87, 34, 0.35);
-    background: var(--background-dark);
+    background: var(--fondo);
     color: var(--primario);
 }
 
@@ -535,7 +535,58 @@ input[type="file"] {
   padding: 1px 2px;
 }
 
+/* --- Tarjetas de Socios --- */
+.tarjeta-socio {
+  border: 1px solid #FFD700;
+  padding: 20px;
+  margin-bottom: 15px;
+  background-color: #1a1a1a;
+  position: relative;
+  border-radius: 8px;
+  color: white;
+}
 
+.info-socio {
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+.boton-actualizar {
+  background-color: #FFD700;
+  color: black;
+  font-weight: bold;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: 0.3s ease;
+}
+
+.boton-actualizar:hover {
+  background-color: #ffeb3b;
+  transform: translateY(-2px);
+}
+
+.boton-borrar {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  background-color: #FF3333;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: 0.3s ease;
+}
+
+.boton-borrar:hover {
+  background-color: #cc0000;
+  transform: translateY(-2px);
+}
 
 
 /* Mobil */
