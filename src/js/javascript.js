@@ -107,21 +107,24 @@ function verSocios() {
         .then(socios => {
             contenedor.innerHTML = ""; // Limpiamos la lista antes de volver imprimirlo
             
+            if (socios.length === 0) {
+                contenedor.innerHTML = '<p style="color: var(--gris); text-align: center;">No hay socios registrados</p>';
+                return;
+            }
+            
             socios.forEach(socio => {
-
-                contenedor.innerHTML += `
-                    <div style="border: 1px solid #ffcc00; padding: 10px; margin-top: 10px; color: white; background: #222; position: relative;">
-                        <p><strong>ID: ${socio.CodUsu}</strong> - ${socio.UsuNom} (${socio.UsuEma})</p>
-                        
-                        <button onclick="actualizarSocio(${socio.CodUsu}, '${socio.UsuNom}')" style="cursor:pointer; background:#ffcc00; color:black; border:none; padding:5px; font-weight: bold;">
-                            ACTUALIZAR NOMBRE
-                        </button>
-
-                        <button onclick="eliminarSocio(${socio.CodUsu})" style="position: absolute; bottom: 10px; right: 10px; cursor: pointer; background: #FF3333; color: white; border: none; padding: 5px 10px; font-weight: bold;">
-                            BORRAR
-                        </button>
-                    </div>
+                const tarjeta = document.createElement('div');
+                tarjeta.className = 'tarjeta-socio';
+                tarjeta.innerHTML = `
+                    <p class="info-socio"><strong>ID: ${socio.CodUsu}</strong> - ${socio.UsuNom} (${socio.UsuEma})</p>
+                    <button onclick="actualizarSocio(${socio.CodUsu}, '${socio.UsuNom}')" class="boton-actualizar">
+                        ACTUALIZAR NOMBRE
+                    </button>
+                    <button onclick="eliminarSocio(${socio.CodUsu})" class="boton-borrar">
+                        BORRAR
+                    </button>
                 `;
+                contenedor.appendChild(tarjeta);
             });
         })
         .catch(error => {
