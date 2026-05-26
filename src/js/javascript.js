@@ -188,39 +188,6 @@ function verMembresias() {
         });
 }
 
-function contratarMembresia(idMembresia) {
-    const idSocio = prompt("Introduce el ID del socio (CodUsu) para asignarle esta membresía:"); 
-    if (!idSocio) return;
-
-    const inicio = new Date().toISOString().split('T')[0];
-    const fin = new Date();
-    fin.setDate(fin.getDate() + 30);
-    const vencimiento = fin.toISOString().split('T')[0];
-
-    const datos = {
-        idSocio: idSocio,
-        idMembresia: idMembresia,
-        fechaInicio: inicio,
-        fechaFin: vencimiento
-    };
-
-    fetch('http://localhost:3000/api/membresia/asignar', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(datos)
-    })
-    .then(res => {
-        if (res.ok) {
-            alert("¡Membresía asignada correctamente al socio!");
-        } else {
-            alert("Error en el servidor al asignar la membresía.");
-        }
-    })
-    .catch(error => {
-        console.error("Error al conectar:", error);
-        alert("No se pudo conectar con el servidor.");
-    });
-}
 // Supongamos que esta es tu función que pinta los socios en el HTML
 function mostrarSocios(socios) {
     const contenedor = document.getElementById('contenedor-usuarios'); // El id de tu HTML
